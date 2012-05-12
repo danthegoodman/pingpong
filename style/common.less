@@ -1,0 +1,49 @@
+*{
+	background-repeat: no-repeat;
+	font-family: georgia, serif;
+	font-size: 1em;
+}
+
+button{
+	cursor: pointer;
+}
+
+html, body{ margin: 0; padding: 0;}
+
+body{
+	font-size: 30px;
+	background-color: #ddd;
+}
+
+#bgimg{
+	z-index: -1;
+	position:absolute;
+	top:0; right:0; bottom:0; left:0;
+	background-image: url('/img/ping.png');
+	opacity: 0.2;
+	background-position: center center;
+	background-size: contain;
+}
+
+#asyncError{
+	position: absolute;
+	bottom: 0; right: 10px;
+	background-image: url('/img/error.png');
+	width: 200px;
+	height: 200px;
+}
+
+// Mixins
+.transition(@prop, @time: 0.1s, @func: linear){
+	-webkit-transition: @arguments;
+	-moz-transition: @arguments;
+	transition: @arguments;
+}
+
+.absolute(@top:auto, @right:auto, @bottom:auto, @left:auto){
+	position: absolute;
+	top: @top;
+	right: @right;
+	bottom: @bottom;
+	left: @left;
+}

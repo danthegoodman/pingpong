@@ -1,0 +1,13 @@
+!!! html
+html
+	head
+		script(src='lib/jquery.min.js')
+		script(src='lib/underscore.min.js')
+		script(src='lib/backbone.min.js')
+		script(src='out/common.js')
+		block head
+	body
+		#bgimg
+		#asyncError(title='Server error. Check console.',
+			style='display:none')
+		block body
