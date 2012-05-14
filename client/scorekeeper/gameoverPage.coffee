@@ -4,6 +4,7 @@ class GameOverPage extends Backbone.View
 		$("#returnToSetup").on 'click', @onReturnToSetupClick
 		$("#playAnotherMatch").on 'click', @onPlayAnotherMatchClick
 		GameList.on 'selectGame' , @setGame
+		GameList.on 'score', @onScoreChange
 
 	setGame: (game) =>
 		@game = game
@@ -14,6 +15,11 @@ class GameOverPage extends Backbone.View
 		@game.save()
 		GameList.trigger 'selectGame', newGame
 		PAGES.goto page
+
+	onScoreChange: (delta, type)=>
+		return unless PAGES.is GameOverPage
+		return unless delta <= 0
+		PAGES.goto GamePage
 
 	onReturnToSetupClick: =>
 		@exitPage SetupPage

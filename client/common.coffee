@@ -121,6 +121,9 @@ class window.PageManager
 	gotoUsingLink: (link) ->
 		@goto link.data('_page')
 
+	'is': (page) ->
+		return @current is @pages[page.name]
+
 	goto: (page) ->
 		prev = @current
 		next = @pages[page.name]
