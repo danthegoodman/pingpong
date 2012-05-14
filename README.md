@@ -2,7 +2,7 @@
 
 A scorekeeping and record-reporting web application.
 
-### Desciprtion
+## Description
 
 This is a webapp, using Node.js for the server and MongoDb as the
 database. It is designed to be run on an internal or local network,
@@ -11,10 +11,9 @@ was developed for Chrome, and though not tested in other browsers,
 it should work there too.
 
 ### Required Applications
-* Node.js(0.6.x)
-* npm
-* MongoDB(2.0.x)
-** specifically the `mongod` binary
+1. Node.js(0.6.x)
+1. npm
+1. MongoDB(2.0.x) (specifically the `mongod` binary)
 
 ### Additional Installation 
     npm -g install forever coffee-script less
