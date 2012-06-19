@@ -1,96 +1,64 @@
-# PAGES = new PageManager()
-# SELECTION = null
-# $ ->
-# 	tabManager = new TabManager()
-# 	SELECTION = new PlayerSelectionManger()
+$ ->
+	new PlayersContainer(el: $ '#players')
 
-# 	PAGES.linkPagesWithDataField 'page'
-# 	PAGES.add new PlayersPage(el: $ '#players')
-# 	PAGES.add new TeamsPage(el: $ '#teams')
-# 	PAGES.add new GamesPage(el: $ '#games')
-# 	PAGES.add new WinLossPage(el: $ '#winLoss')
-# 	PAGES.add new PointsPage(el: $ '#points')
+	playersFetched = PlayerList.fetch()
 
-# 	playersFetched = PlayerList.fetch()
+	$.when(playersFetched).then ->
+		$.getJSON '/reports/games', processGames
+		$.getJSON '/reports/points', processPoints
 
-# 	# I think the page looks better when it fades in after a small delay.
-# 	fakeDelay = new $.Deferred()
-# 	_.delay(fakeDelay.resolve, 250)
+processGames = (data) ->
+	for p in data
+		PlayerList.get(p._id).trigger 'getGame', p.value
 
-# 	$.when(playersFetched, fakeDelay).then ->
-# 		PAGES.goto PlayersPage
-# 		tabManager.setSelected $('.player.tab').eq(0)
+processPoints = (data) ->
+	for p in data
+		PlayerList.get(p._id).trigger 'getPoint', p.value
 
-# class PlayersPage extends Backbone.View
-# 	initialize: ->
-# 		PlayerList.on 'reset', @onReset
+class PlayersContainer extends Backbone.View
+	initialize: ->
+		PlayerList.on 'reset', @onReset
 
-# 	onReset: =>
-# 		@$el.empty()
-# 		PlayerList.each (m) =>
-# 			@$el.append( new PlayersPage.Item(model: m).el )
+	onReset: =>
+		PlayerList.each (m) =>
+			@$el.append new PlayerItem(model: m).el
 
-# class PlayersPage.Item extends Backbone.View
-# 	className: 'player'
-# 	events:
-# 		'click': 'onClick'
+class PlayerItem extends Backbone.View
+	tagName: 'tr'
+	className: 'player'
 
-# 	initialize: ->
-# 		@state = false
-# 		@$el.text @model.get 'name'
+	initialize: ->
+		@$el.append $ """
+			<td class='name'>#{@model.get 'name'}</span>
+			<td class='games'/>
+			<td class='win'/>
+			<td class='lose'/>
+			<td class='scoreWon'/>
+			<td class='scoreLost'/>
+			<td class='scoreRatio'/>
+			<td class='serveGood'/>
+			<td class='serveBad'/>
+			<td class='serveRatio'/>"""
 
-# 	onClick: =>
-# 		@state = !@state
-# 		@$el.toggleClass 'selected', @state
-# 		@model.trigger "select:#{@state}", @model
+		@model.on 'getGame', @onGameResponse
+		@model.on 'getPoint', @onPointResponse
 
-# class TeamsPage extends Backbone.View
+	onGameResponse: (d)=>
+		@$el.find('.games').text(d.win + d.lose)
+		@$el.find('.win').text d.win
+		@$el.find('.lose').text d.lose
 
-# class GamesPage extends Backbone.View
+	onPointResponse: (d)=>
+		@$el.find('.scoreWon').text d.scoreWon
+		@$el.find('.scoreLost').text d.scoreLost
 
-# class WinLossPage extends Backbone.View
+		s = d.scoreWon / d.scoreLost
+		s = Math.round(s*100)/100
+		@$el.find('.scoreRatio').text s
 
-# class PointsPage extends Backbone.View
+		@$el.find('.serveGood').text d.goodServe
+		@$el.find('.serveBad').text d.badServe
 
-# class TabManager
-# 	constructor: ->
-# 		@selection = null
-# 		$('.tab').on 'click', @onTabClick
-
-# 	setSelected: (el) ->
-# 		@selection.toggleClass('selected', false) if @selection
-# 		@selection = el
-# 		@selection.toggleClass('selected', true) if @selection
-
-# 	onTabClick: (e) =>
-# 		target = $(e.target)
-# 		return if target.is(@selection)
-# 		@setSelected target
-# 		PAGES.gotoUsingLink target
-
-# class PlayerSelectionManger
-# 	constructor: ->
-# 		@el = $('#playerSelection')
-# 		@selection = []
-# 		PlayerList.on 'select:true', @onPlayerSelect
-# 		PlayerList.on 'select:false', @onPlayerDeselect
-
-# 	render: ->
-# 		names = _.collect @selection, (it) -> it.get 'name'
-
-# 		@el.text( names.join(', ') )
-
-# 	onPlayerSelect: (model)=>
-# 		ndx = @selection.indexOf(model)
-# 		return unless ndx is -1
-# 		@selection.push(model)
-# 		@render()
-
-# 	onPlayerDeselect: (model)=>
-# 		ndx = @selection.indexOf(model)
-# 		return if ndx is -1
-# 		@selection.splice(ndx, 1)
-# 		@render()
-
-
-
+		r = d.goodServe / (d.goodServe+ d.badServe)
+		r = Math.round(r*1000)/10
+		@$el.find('.serveRatio').text "#{r}%"

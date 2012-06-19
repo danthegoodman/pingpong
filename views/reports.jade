@@ -6,10 +6,18 @@ append head
 	script(type='text/javascript', src='out/reports.js')
 
 append body
-	table: tr: td
-		h1 Coming soon!
-		p  Scores!
-		p  Reports!
-		p  Statistics!
-		p  All you've ever dreamed!*
-			aside *Don't count on this one
+	table#header: tr
+		th.name Player
+		th.games Games
+		th.win Wins
+		th.lose Losses
+		th.scoreWon Points
+		th.scoreLost Lost
+		th.scoreRatio Ratio
+		th.serveGood Serves
+		th.serveBad Misses
+		th.serveRatio Ratio
+
+
+	#container
+		table#players
