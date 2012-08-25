@@ -28,6 +28,7 @@ class KeyboardHandler
 
 	doBadServe: (team, pos)->
 		return unless @game
+		return if @game.isComplete()
 		@game.recordBadServe()
 
 	doUndoScore: (team, pos)->
@@ -39,6 +40,7 @@ class KeyboardHandler
 
 	doScore: (team, pos)->
 		return unless @game
+		return if @game.isComplete()
 		p = if pos is "1" then 1 else 0
 		@game.addPointBy @game.playerBasedOnScore(team, p)
 
