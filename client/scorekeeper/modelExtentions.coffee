@@ -98,15 +98,18 @@ Game.prototype = _.extend Game.prototype,
 		t0 = _.clone(@get 'team0')
 		t1 = _.clone(@get 'team1')
 
-		r2 = -> Math.floor(Math.random * 2)
-		if r2() #Randomize the starting server
+		count = @get('gameCount') ? 0
+		count++
+		if count%2 is 0 # Switch the starting server
 			t0.reverse()
 			t1.reverse()
 
 		g = new Game
 			parent: @id
-			team0: t1 #switch sides so the other team starts serving
+			gameCount: count
+			team0: t1 # Switch sides so the other team starts serving
 			team1: t0
+
 		$.when( GameList.create(g) ).then (newGame)->
 			afterSaveCallback(newGame)
 

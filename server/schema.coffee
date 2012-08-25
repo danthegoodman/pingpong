@@ -27,7 +27,9 @@ exports.connect = ->
 	Game = new Schema
 		date: { type: Date, default: Date.now }
 		parent: { type: Schema.ObjectId, ref: 'Game' }
-			# The parent game, if part of a match 
+			# The parent game, if part of a match
+		gameCount: { type: Number, default: 0 }
+			# The n-th game of a match
 		team0: [{ type: Schema.ObjectId, ref: 'Player' }]
 		team1: [{ type: Schema.ObjectId, ref: 'Player' }]
 		score0: [{ type: Schema.ObjectId, ref: 'Point' }]

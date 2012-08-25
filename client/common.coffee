@@ -32,6 +32,7 @@ class window.Game extends Backbone.Model
 	defaults:
 		date: new Date()
 		parent: null #gameId
+		gameCount: 0 # Nth game in a match
 		team0: [] # list of player IDs
 		team1: []
 		score0: [] # list of point IDs
