@@ -25,6 +25,9 @@ Game.prototype = _.extend Game.prototype,
 		s1 = @score(1)
 		return (s0 >= 21 or s1 >= 21) and (Math.abs(s0 - s1) >= 2)
 
+	isNewGame: () ->
+		return @get('scoreHistory').length is 0
+
 	winningTeam: () ->
 		winTeam = if @score(0) > @score(1) then 0 else 1
 		p = []
@@ -83,6 +86,14 @@ Game.prototype = _.extend Game.prototype,
 		new Point(_id: lastPointId).destroy()
 		@save()
 		GameList.trigger 'score', -1, 'undo'
+
+	switchServingSide: ->
+		@set {
+			team0: @get 'team1'
+			team1: @get 'team0'
+		}
+		@save()
+		GameList.trigger 'teamChange'
 
 	createNewMatch: (afterSaveCallback)->
 		t0 = _.clone(@get 'team0')

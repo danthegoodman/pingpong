@@ -32,7 +32,10 @@ class KeyboardHandler
 
 	doUndoScore: (team, pos)->
 		return unless @game
-		@game.undoLastPoint()
+		if @game.isNewGame()
+			@game.switchServingSide()
+		else
+			@game.undoLastPoint()
 
 	doScore: (team, pos)->
 		return unless @game

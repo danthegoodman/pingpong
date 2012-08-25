@@ -54,6 +54,8 @@ class NameCell
 
 		GameList.on 'selectGame', @setGame
 		GameList.on 'score', @render
+		GameList.on 'teamChange', @onTeamChange
+
 		@el.on 'click', @onClick
 
 	onClick: =>
@@ -67,6 +69,9 @@ class NameCell
 		t = game.get("team#{@team}")
 		shouldHide = t.length is 1 and @pos is 1
 		@el.parent().toggle(!shouldHide)
+		@render()
+
+	onTeamChange: =>
 		@render()
 
 	render: =>
