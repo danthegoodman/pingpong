@@ -42,7 +42,7 @@ class GamePage extends Backbone.View
 	onCancelGameClick: =>
 		b = window.confirm("Are you sure you want to cancel this game?")
 		return unless b
-		
+
 		$.when(@game.destroy()).then ->
 			GameList.trigger 'selectGame', null
 			PAGES.goto SetupPage

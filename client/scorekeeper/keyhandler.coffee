@@ -23,7 +23,7 @@ class KeyboardHandler
 			@teamMap[k] = team.split('')
 		$(document).on 'keydown', @onKeyDown
 		$(document).on 'keyup', @onKeyUp
-		
+
 		GameList.on 'selectGame', @setGame
 
 	doBadServe: (team, pos)->
@@ -93,4 +93,3 @@ class KeyboardHandler
 	onScoreTimeout: =>
 		@doScore @teamMap[@activeChar]...
 		@clearAllTimeouts()
-		

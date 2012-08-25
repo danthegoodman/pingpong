@@ -1,4 +1,4 @@
-Game.prototype = _.extend Game.prototype, 
+Game.prototype = _.extend Game.prototype,
 	_unsafePlayer: (teamN, p) ->
 		if @get("team#{teamN}").length is 1
 			return PlayerList.get(@get("team#{teamN}")[p])
@@ -45,9 +45,9 @@ Game.prototype = _.extend Game.prototype,
 		s = @score()
 		if(s < 40)
 			if teamN is 0
-				return (s%10) < 5 
+				return (s%10) < 5
 			else
-				return (s%10) >= 5 
+				return (s%10) >= 5
 		else
 			return (s%2) is teamN
 
@@ -75,14 +75,13 @@ Game.prototype = _.extend Game.prototype,
 			@save()
 			GameList.trigger 'score', 1, 'badServe'
 
-
 	undoLastPoint: ->
 		hist = @get('scoreHistory')
 		return if hist.length is 0
 
 		lastTeam = hist.pop()
 		lastPointId = @get("score#{lastTeam}").pop()
-		
+
 		new Point(_id: lastPointId).destroy()
 		@save()
 		GameList.trigger 'score', -1, 'undo'

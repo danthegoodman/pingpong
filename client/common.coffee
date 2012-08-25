@@ -7,7 +7,7 @@ console.log """
 	"""
 
 #-------------- Event Bus ---------------#
-# Since jQuery and Backbone use different namespace 
+# Since jQuery and Backbone use different namespace
 # semantics, lets use "event:namespace"
 bus = $ {}
 convertNS = (str) -> str.replace new RegExp(':', 'g'), '.'
@@ -33,11 +33,11 @@ class window.Game extends Backbone.Model
 		date: new Date()
 		parent: null #gameId
 		team0: [] # list of player IDs
-		team1: [] 
+		team1: []
 		score0: [] # list of point IDs
-		score1: [] 
+		score1: []
 		scoreHistory: [] # 0 or 1
-		inProgress: true 
+		inProgress: true
 		finish: null # date/time of completion
 
 class window.Point extends Backbone.Model
@@ -56,12 +56,12 @@ class window.Point extends Backbone.Model
 class PlayerListCollection extends Backbone.Collection
 	model: Player
 	url: "/player"
-	comparator: (player) -> 
-		player.get 'name'	
+	comparator: (player) ->
+		player.get 'name'
 class GameListCollection extends Backbone.Collection
 	model: Game
 	url: "/game"
-	comparator: (game) -> 
+	comparator: (game) ->
 		new Date(game.get('date')).getTime()
 
 window.PlayerList = new PlayerListCollection()
@@ -96,7 +96,7 @@ Backbone.sync = (method, model, options) ->
 	e.add -> syncError(arguments...)
 	e.add options.fail if options?.fail
 
-	_sync method, model, 
+	_sync method, model,
 		success: s.fire
 		error: e.fire
 

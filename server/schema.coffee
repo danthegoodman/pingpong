@@ -32,7 +32,7 @@ exports.connect = ->
 		team1: [{ type: Schema.ObjectId, ref: 'Player' }]
 		score0: [{ type: Schema.ObjectId, ref: 'Point' }]
 		score1: [{ type: Schema.ObjectId, ref: 'Point' }]
-		scoreHistory: [ Number ] 
+		scoreHistory: [ Number ]
 			# 0 or 1, the team who scored
 		inProgress: Boolean
 		finish: Date
@@ -43,22 +43,22 @@ exports.connect = ->
 		mongoose.model('Point').remove {game: @_id}, (err) ->
 			next(err)
 
-	# Create a filter method on our schema that will  
+	# Create a filter method on our schema that will
 	# filter out values we don't want to save.
 	#
-	# The filter is a whitelist that by default includes all 
+	# The filter is a whitelist that by default includes all
 	# properties listed above on the schema.
 	#
-	# Every field name listed here will be excluded from the 
-	# whitelist. 
+	# Every field name listed here will be excluded from the
+	# whitelist.
 	createFilter Player
-	createFilter Point 
+	createFilter Point
 	createFilter Game, 'date'
 
-	# Create a method ("copyFrom") on our model that will 
-	# update all fields using the given object. Fields not 
+	# Create a method ("copyFrom") on our model that will
+	# update all fields using the given object. Fields not
 	# listed in the given object will not be modified.
-	# 
+	#
 	# Meant to be combined with the filter method above.
 	createCopyFromMethod Player
 	createCopyFromMethod Point
@@ -81,11 +81,11 @@ createCopyFromMethod = (Model) ->
 establishConnection = ()->
 	hadError = false;
 	timeout = 2;
-	
+
 	doConnect = ->
 		testConnection = mongoose.createConnection URL
 
-		testConnection.on 'error', -> 
+		testConnection.on 'error', ->
 			console.error "Connection error with db. Will try again in #{timeout} seconds."
 			hadError = true
 			testConnection.close()
