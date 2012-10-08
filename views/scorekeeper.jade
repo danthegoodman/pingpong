@@ -18,11 +18,17 @@ append body
 				td#slot01.team.left
 				td#slot11.team.right
 		#players
+		#tournament Tournament Match
 
 	section#game
+		#tournamentStatus
+			.left
+			.right
+			p Tournament Match
+
 		#cancelGame
 			| Cancel Game <span>X</span>
-		
+
 		table.teamContainer.left
 			tr: td#standby0
 			tr: td#serve0
@@ -44,9 +50,10 @@ append body
 			tr: td
 				h2#winTitle
 				h1#winners
+				h1#subwinners
 			tr: td.buttons
 				#gameOverUndo Undo Last Score
-				#playAnotherMatch Play Another Match
+				#playAnotherGame Play Another Game
 				#returnToSetup Return to Player Selection
 
 

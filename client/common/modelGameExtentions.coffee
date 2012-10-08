@@ -1,4 +1,5 @@
-Game.prototype = _.extend Game.prototype,
+$ ->
+	Game.prototype = _.extend Game.prototype,
 	_unsafePlayer: (teamN, p) ->
 		if @get("team#{teamN}").length is 1
 			return PlayerList.get(@get("team#{teamN}")[p])
@@ -75,6 +76,9 @@ Game.prototype = _.extend Game.prototype,
 			@save()
 			GameList.trigger 'score', 1, 'badServe'
 
+	getPlayers: ->
+		return [@get('team0'), @get('team1')]
+
 	undoLastPoint: ->
 		hist = @get('scoreHistory')
 		return if hist.length is 0
@@ -94,7 +98,7 @@ Game.prototype = _.extend Game.prototype,
 		@save()
 		GameList.trigger 'teamChange'
 
-	createNewMatch: (afterSaveCallback)->
+	createNewGame: (afterSaveCallback)->
 		t0 = _.clone(@get 'team0')
 		t1 = _.clone(@get 'team1')
 
@@ -109,9 +113,11 @@ Game.prototype = _.extend Game.prototype,
 			gameCount: count
 			team0: t1 # Switch sides so the other team starts serving
 			team1: t0
+			tournament: @get('tournament')
 
-		$.when( GameList.create(g) ).then (newGame)->
-			afterSaveCallback(newGame)
+		$.when( g.save() ).then ->
+			GameList.add(g)
+			afterSaveCallback(g)
 
 	_createPoint: ->
 		servingTeam = if @isServing(0) then 0 else 1

@@ -10,6 +10,8 @@ class GamePage extends Backbone.View
 		new ScoreCell(0)
 		new ScoreCell(1)
 
+		new TournamentBar()
+
 		$("#undoScore").on 'click', @onUndoScoreClick
 		$("#badServe").on 'click', @onBadServeClick
 		$("#cancelGame").on 'click', @onCancelGameClick
@@ -43,6 +45,7 @@ class GamePage extends Backbone.View
 		b = window.confirm("Are you sure you want to cancel this game?")
 		return unless b
 
+		PAGES.fadeOut()
 		$.when(@game.destroy()).then ->
 			GameList.trigger 'selectGame', null
 			PAGES.goto SetupPage
@@ -92,3 +95,39 @@ class ScoreCell
 	render: =>
 		return unless @game
 		@el.text @game.score(@team)
+
+class TournamentBar
+	constructor: () ->
+		@bar = $ "#tournamentStatus"
+		@bar.hide()
+
+		@left = @bar.find(".left")
+		@right = @bar.find(".right")
+
+		GameList.on 'selectGame', @setGame
+		GameList.on 'teamChange', @onTeamChange
+
+	onTeamChange: =>
+		t = @left.html()
+		@left.html @right.html()
+		@right.html t
+
+	setGame: (game) =>
+		@left.empty()
+		@right.empty()
+
+		t = TournamentList.first()
+		visible = t?.belongsWith(game) is true
+		@bar.toggle(visible)
+		return unless visible
+
+		score = t.getScore(game.getPlayers())
+		@renderStars(@left, score[0])
+		@renderStars(@right, score[1])
+
+	renderStars: (el, n)->
+		return if n < 1
+		for i in [1..n]
+			el.append "<span class='star'/>"
+
+

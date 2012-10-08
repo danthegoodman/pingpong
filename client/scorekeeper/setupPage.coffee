@@ -10,19 +10,18 @@ class SetupPage extends Backbone.View
 		PlayerList.on 'reset', @onReset
 		$BUS.on 'canBegin', @onCanBeginChange
 		@teamManager = new TeamSlotManager()
+		@tournamentManager = new TournamentMatchManager(@teamManager)
 
 	#called from the page manager
 	render: ->
 		@begin.fadeOut(0)
+		@tournamentManager.onPageStart()
 		PlayerList.each (p) =>
 			p.trigger "select:off", p
 
 	onBeginClick: =>
-		players = [[],[]]
-		for s in @teamManager.slots
-			continue unless s.player?
-			players[s.team].push(s.player.id)
-		
+		players = @teamManager.getPlayers()
+
 		return unless players[0].length
 		return unless players[1].length
 
@@ -33,8 +32,11 @@ class SetupPage extends Backbone.View
 		players[1].reverse() if r2() is 1
 
 		newGame = new Game(team0: players[0], team1: players[1])
-		$.when( GameList.create(newGame) ).then (game)->
-			GameList.trigger 'selectGame', game
+		@tournamentManager.updateGame newGame
+
+		$.when( newGame.save() ).then ()=>
+			GameList.add newGame
+			GameList.trigger 'selectGame', newGame
 			PAGES.goto GamePage
 
 	onCanBeginChange: (e, value) =>
@@ -87,6 +89,13 @@ class TeamSlotManager
 		$('.team').on 'click', @redraw
 		@redraw()
 
+	getPlayers: ->
+		players = [[],[]]
+		for s in @slots
+			continue unless s.player?
+			players[s.team].push(s.player.id)
+		return players
+
 	redraw: =>
 		count = 0:0, 1:0
 
@@ -98,7 +107,7 @@ class TeamSlotManager
 			count[s.team] += 1 if s.player?
 
 		$BUS.trigger 'canBegin', (count[0] and count[1])
- 
+
 	onPlayerSelect: (pl) =>
 		return unless @current?
 		@slots[@current].player = pl
@@ -116,7 +125,7 @@ class TeamSlotManager
 		pl.trigger 'selected', null
 
 class TeamSlot extends Backbone.View
-	events: 
+	events:
 		'click': 'onClick'
 
 	initialize: (@team, @n) ->
@@ -136,3 +145,37 @@ class TeamSlot extends Backbone.View
 	onClick: =>
 		return unless @player?
 		PlayerList.trigger 'select:off', @player
+
+class TournamentMatchManager
+	constructor: (teamManager)->
+		@teamManager = teamManager
+		@tournament = null
+		@visible = false
+		@section = $ "#tournament"
+		@el = $ "#tournament p"
+
+		$BUS.on 'canBegin', @onCanBeginChange
+
+	updateGame: (game) ->
+		return unless @visible
+		game.set('tournament', @tournament.id)
+
+	onPageStart: ->
+		@visible = false
+		@tournament = null
+		@section.fadeOut(0)
+		@tournament = TournamentList.at(0)
+
+	onCanBeginChange: (e, canBegin) =>
+		t = @tournament
+		return @setVisible false unless canBegin and t?
+
+		pl = @teamManager.getPlayers()
+		@setVisible(t.hasMatch(pl) and not t.isMatchComplete(pl))
+
+	setVisible: (b) ->
+		@visible = b
+		targetOpacity = if b then '1' else '0'
+		return if @section.css('opacity') is targetOpacity
+		@section.fadeTo(200, targetOpacity)
+

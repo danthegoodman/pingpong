@@ -6,18 +6,31 @@ append head
 	script(type='text/javascript', src='out/reports.js')
 
 append body
-	table#header: tr
-		th.name Player
-		th.games Games
-		th.win Wins
-		th.lose Losses
-		th.scoreWon Points
-		th.scoreLost Lost
-		th.scoreRatio Ratio
-		th.serveGood Serves
-		th.serveBad Misses
-		th.serveRatio Ratio
+	#decoBar.header
 
+	.selectBar Select a report:
+		select#report
 
-	#container
-		table#players
+	section#tournament: .container
+		.standings
+			h1 Standings
+			table
+		.details
+			h1 Details
+			table
+
+	section#allGames
+		table.header: tr
+			th.name
+			th.games Games
+			th.win Wins
+			th.lose Losses
+			th.scoreWon Points
+			th.scoreLost Lost
+			th.scoreRatio Ratio
+			th.serveGood Serves
+			th.serveBad Misses
+			th.serveRatio Ratio
+
+		.container
+			table.players

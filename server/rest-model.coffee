@@ -4,10 +4,12 @@ exports.handle = (app) ->
 	Player = mongoose.model 'Player'
 	Game = mongoose.model 'Game'
 	Point = mongoose.model 'Point'
+	Tournament = mongoose.model 'Tournament'
 
 	genericRest app, Player, 'player'
 	genericRest app, Point, 'point'
 	genericRest app, Game, 'game'
+	genericRest app, Tournament, 'tournament'
 
 genericRest = (app, Model, url, extras={}) ->
 	app.get "/#{url}/:id", (req, res, next) ->

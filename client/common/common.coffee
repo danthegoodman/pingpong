@@ -60,7 +60,6 @@ class window.Tournament extends Backbone.Model
 	defaults:
 		date: new Date()
 		players: [] # list of player IDs
-		title: null # String
 		type: null # String
 		table: null # Data map, structure based on type
 		inProgress: true

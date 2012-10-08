@@ -12,9 +12,11 @@ $ ->
 	fakeDelay = new $.Deferred()
 
 	$.getJSON '/inprogress', (data)->
-		unless _.isEmpty(data)
-			gameInProgress = new Game(data)
+		unless _.isEmpty( data['game'] )
+			gameInProgress = new Game(data['game'])
 			GameList.add gameInProgress
+		unless _.isEmpty( data['tournament'] )
+			TournamentList.add new Tournament(data['tournament'])
 		gameFetched.resolve()
 
 	# I think the page looks better when delayed a bit.
@@ -28,5 +30,5 @@ $ ->
 			if gameInProgress.isComplete()
 				# Game has been completed but not marked in the DB...
 				PAGES.goto GameOverPage
-			else 
+			else
 				PAGES.goto GamePage

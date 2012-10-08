@@ -2,57 +2,128 @@
 
 html, body{ height: 100%; overflow: hidden;}
 
+h1{margin: 0;}
+
 table{
 	width: 100%;
 	height: 100%;
 	vertical-align: middle;
 	text-align: center;
+	border-collapse: collapse;
 }
 
-#header{
+#decoBar,
+.selectBar,
+.header {
+	color: #fff;
+	height: 2.5em;
+	font-size: 0.8em;
+
+}
+
+#decoBar{
+	.absolute(0, 0, auto, 0);
+	z-index: -1;
+	background-color: rgba(0,0,0,0.8);
+}
+
+.selectBar{
+	z-index: 1;
+	.absolute(0, auto, auto, 0);
+	line-height: 2.5em;
+	padding-left: 0.5em;
+
+	#report{
+		margin-left: 0.5em;
+	}
+}
+
+.header{
+	line-height: 1em;
 	border-collapse: collapse;
 	margin: 0;
-	font-size: 0.8em;
-	line-height: 1em;
 	width: 100%;
-	height: 2.5em;
-	background-color: rgba(0,0,0,0.8);
-	color: #fff;
 }
-#header th{ font-weight: normal; }
 
-#container{
+.header th{ font-weight: normal; }
+
+.container{
+	overflow: auto;
 	.absolute(2em, 0, 0, 0)
 }
 
-#players{
-	border-collapse: collapse;
-	width: 100%;
-	height: 100%;
+#allGames{
 
-	tr:nth-child(even){
-		background-color: rgba(0,0,0,0.05);
+	.players{
+		border-collapse: collapse;
+		width: 100%;
+		height: 100%;
+
+		tr:nth-child(even){
+			background-color: rgba(0,0,0,0.05);
+		}
+
+		tr:hover{
+			color: #800;
+		}
 	}
 
-	tr:hover{
-		color: #800;
+	.players td:not(.name){
+		font-family: Menlo, monospace;
 	}
+
+	.name{ padding-left: 0.5em; text-align: left;}
+	.leftBorder{ border-left: 1px solid rgba(0,0,0,0.3); }
+	.games { width: 110px; .leftBorder }
+	.win { width: 110px; }
+	.lose { width: 110px; }
+	.scoreWon { width: 140px; .leftBorder }
+	.scoreLost { width: 140px; }
+	.scoreRatio { width: 140px; }
+	.serveGood { width: 140px; .leftBorder }
+	.serveBad { width: 140px; }
+	.serveRatio { width: 140px; }
 }
 
-.name{ padding-left: 0.5em; text-align: left;}
+#tournament{
+	h1{
+		margin-bottom: 0.5em;
+		text-align: center;
+	}
+	table{ height: auto;}
+	td{
+		padding: 0 1em;
+		height: 2em;
+		line-height: 2em;
+		border-top: 1px solid rgba(0,0,0,0.3);
+		text-align: left;
+		&:last-child{ text-align: right; }
+	}
+	tr:first-child td{ border: 0; }
 
-#players td:not(.name){
-	font-family: Menlo, monospace;
+	.standings{
+		.absolute(0.5em, 60%, 0.5em, 0);
+		padding: 0 2em;
+		border-right: 1px solid rgba(0,0,0,0.3);
+		tr{ cursor: pointer; }
+
+		.selected{background-color:#6CA2D8;}
+	}
+	.details{
+		.absolute(0.5em, 0, 0.5em, 40%);
+		padding: 0 2em;
+
+		.game{
+			font-family: arial, sans-serif;
+			display:inline-block;
+			padding: 0 0.5em;
+			margin: 0.25em 0 0.25em 1em;
+			line-height: 1.5em;
+			width: 4em;
+			text-align: center;
+		}
+		.win{ background-color: #6CD8A2; }
+		.lose{ background-color: #D86C6C; }
+	}
+
 }
-
-.leftBorder{ border-left: 1px solid rgba(0,0,0,0.3); }
-
-.games { width: 110px; .leftBorder }
-.win { width: 110px; }
-.lose { width: 110px; }
-.scoreWon { width: 140px; .leftBorder }
-.scoreLost { width: 140px; }
-.scoreRatio { width: 140px; }
-.serveGood { width: 140px; .leftBorder }
-.serveBad { width: 140px; }
-.serveRatio { width: 140px; }

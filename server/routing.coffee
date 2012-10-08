@@ -8,12 +8,13 @@ exports.handle = (app)->
 	app.set 'view engine', 'jade'
 	app.set 'view options', layout: false
 
-	views = 
-		'/'           : 'reports.jade'
-		'/index'      : 'index.jade'
-		'/config'     : 'config.jade'
-		'/reports'    : 'reports.jade'
-		'/scorekeeper': 'scorekeeper.jade'
+	views =
+		'/'                : 'reports.jade'
+		'/index'           : 'index.jade'
+		'/config'          : 'config.jade'
+		'/reports'         : 'reports.jade'
+		'/scorekeeper'     : 'scorekeeper.jade'
+		'/createTournament': 'createTournament.jade'
 
 	logs =
 		'/log/errors' : 'log/server.err.log'

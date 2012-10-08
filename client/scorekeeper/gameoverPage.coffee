@@ -2,7 +2,7 @@ class GameOverPage extends Backbone.View
 	initialize: ->
 		$("#gameOverUndo").on 'click', @onUndoScoreClick
 		$("#returnToSetup").on 'click', @onReturnToSetupClick
-		$("#playAnotherMatch").on 'click', @onPlayAnotherMatchClick
+		$("#playAnotherGame").on 'click', @onPlayAnotherGameClick
 		GameList.on 'selectGame' , @setGame
 		GameList.on 'score', @onScoreChange
 
@@ -12,9 +12,17 @@ class GameOverPage extends Backbone.View
 	exitPage: (page, newGame=null) =>
 		@game.set 'inProgress', false
 		@game.set 'finish', new Date()
-		@game.save()
-		GameList.trigger 'selectGame', newGame
-		PAGES.goto page
+
+		t = TournamentList.first()
+		if t?.belongsWith @game
+			t.addGame( @game )
+		else
+			t = null
+
+		PAGES.fadeOut()
+		$.when( t?.save(), @game.save() ).then ->
+			GameList.trigger 'selectGame', newGame
+			PAGES.goto page
 
 	onScoreChange: (delta, type)=>
 		return unless PAGES.is GameOverPage
@@ -24,8 +32,8 @@ class GameOverPage extends Backbone.View
 	onReturnToSetupClick: =>
 		@exitPage SetupPage
 
-	onPlayAnotherMatchClick: =>
-		@game.createNewMatch (newGame) =>
+	onPlayAnotherGameClick: =>
+		@game.createNewGame (newGame)=>
 			@exitPage GamePage, newGame
 
 	onUndoScoreClick: =>
@@ -35,12 +43,44 @@ class GameOverPage extends Backbone.View
 	# Called from the page manager
 	render: =>
 		@return if @game is null
-		t = @game.winningTeam()
+		$("#playAnotherGame").show()
+		t = TournamentList.first()
+		if t?.belongsWith @game
+			return @renderTournament(t)
 
-		if t.length is 1
-			title = '... and the winner is:'
+		team = @game.winningTeam()
+		$("#winners").text team.join(' and ')
+		$("#subwinners").empty()
+
+		$title = $("#winTitle")
+		if team.length is 1
+			$title.text '... and the winner is:'
 		else
-			title = '... and the winners are:'
+			$title.text '... and the winners are:'
 
-		$("#winTitle").text title
-		$("#winners").text t.join(' and ')
+
+	renderTournament: (t)->
+		pl = @game.getPlayers()
+		score = t.getScore(pl)
+		winTeam = if @game.score(0) > @game.score(1) then 0 else 1
+		loseTeam = Math.abs(winTeam-1)
+		winPlayer = PlayerList.get(pl[winTeam][0]).get 'name'
+		losePlayer = PlayerList.get(pl[loseTeam][0]).get 'name'
+
+		score[winTeam] += 1
+
+		$title = $("#winTitle")
+		$winners = $("#winners")
+		$subwinners = $("#subwinners")
+
+		if score[0] is 2 or score[1] is 2
+			$title.text '... and the winner of the match is:'
+			$winners.text winPlayer
+			$subwinners.empty()
+			$("#playAnotherGame").hide()
+			return
+
+		$title.text '... and the standings are:'
+
+		$winners.text "#{winPlayer} - #{score[winTeam]}"
+		$subwinners.text "#{losePlayer} - #{score[loseTeam]}"

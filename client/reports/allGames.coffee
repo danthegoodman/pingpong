@@ -1,35 +1,36 @@
-$ ->
-	new PlayersContainer(el: $ '#players')
+class AllGamesReport extends Backbone.View
 
-	playersFetched = PlayerList.fetch()
-
-	$.when(playersFetched).then ->
-		$.getJSON '/reports/games', processGames
-		$.getJSON '/reports/points', processPoints
-
-processGames = (data) ->
-	for p in data
-		PlayerList.get(p._id).trigger 'getGame', p.value
-
-processPoints = (data) ->
-	for p in data
-		PlayerList.get(p._id).trigger 'getPoint', p.value
-
-class PlayersContainer extends Backbone.View
 	initialize: ->
+		@loaded = false
+		@players = @$el.find('.players')
+
 		PlayerList.on 'reset', @onReset
+
+	render: ->
+		return if @loaded
+		$.getJSON '/reports/games', @onProcessGames
+		$.getJSON '/reports/points', @onProcessPoints
+		@loaded = true
 
 	onReset: =>
 		PlayerList.each (m) =>
-			@$el.append new PlayerItem(model: m).el
+			@players.append new AllGamesReport.PlayerItem(model: m).el
 
-class PlayerItem extends Backbone.View
+	onProcessGames: (data) =>
+		for p in data
+			PlayerList.get(p._id).trigger 'getGame', p.value
+
+	onProcessPoints: (data) ->
+		for p in data
+			PlayerList.get(p._id).trigger 'getPoint', p.value
+
+class AllGamesReport.PlayerItem extends Backbone.View
 	tagName: 'tr'
 	className: 'player'
 
 	initialize: ->
 		@$el.append $ """
-			<td class='name'>#{@model.get 'name'}</span>
+			<td class='name'/>
 			<td class='games'/>
 			<td class='win'/>
 			<td class='lose'/>
@@ -40,6 +41,7 @@ class PlayerItem extends Backbone.View
 			<td class='serveBad'/>
 			<td class='serveRatio'/>"""
 
+		@$el.find('.name').text @model.get 'name'
 		@model.on 'getGame', @onGameResponse
 		@model.on 'getPoint', @onPointResponse
 
