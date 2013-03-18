@@ -34,6 +34,9 @@ class GameSoundHandler
 		return unless @game
 		s = SCORE_SOURCE[source]
 		return unless s
+		
+		if s is 'badServe' and @game.isComplete()
+			s = 'error'
 		soundManager.play s
 
 audifySyncError = ->
