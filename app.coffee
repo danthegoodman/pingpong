@@ -7,7 +7,7 @@ PORT = process.env.PINGPONG_PORT ? 8000
 global.rootDir = process.env.PINGPONG_DIR ? __dirname
 global.path = () -> path.resolve(global.rootDir, arguments...)
 
-app = express.createServer()
+app = express()
 
 app.configure ->
 	app.use express.errorHandler dumpExceptions: true
@@ -15,7 +15,14 @@ app.configure ->
 	app.use app.router
 	app.use express.static global.path('public')
 
-app.error (err, req, res)->
+require('./server/routing').handle(app)
+require('./server/schema').connect()
+
+require('./server/rest-model').handle(app)
+require('./server/rest-etc').handle(app)
+require('./server/rest-report').handle(app)
+
+app.use (err, req, res, next)->
 	d = new Date().toLocaleString();
 	if err.name and err.message
 		msg = "#{d} - #{err.name}: #{err.message}"
@@ -27,12 +34,6 @@ app.error (err, req, res)->
 		console.error "#{d} - Unknown Error: ", err
 	res.send(msg, 500)
 
-require('./server/routing').handle(app)
-require('./server/schema').connect()
-
-require('./server/rest-model').handle(app)
-require('./server/rest-etc').handle(app)
-require('./server/rest-report').handle(app)
 
 app.listen(PORT)
 util.log "Server started (port = #{PORT})"
