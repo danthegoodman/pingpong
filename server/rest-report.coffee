@@ -93,3 +93,38 @@ exports.handle = (app) ->
 		Point.collection.mapReduce m,r,p, (e, v, s) ->
 			return next(e) if e
 			res.json v ? {}
+
+
+	app.post '/reports/playersGames', (req, res, next) ->
+		players = req.body.players
+		return next("Missing required attribute: 'players'") unless players?
+		return next("Players must have a length of 4") unless players.length is 4
+		players = players.sort();
+
+		m = ->
+			return if @team0.length is 1
+			w = [@team0[0], @team1[0], @team0[1], @team1[1]]
+			x = w.slice().sort()
+
+			l = AAAA
+			return unless l[0] == x[0]+""
+			return unless l[1] == x[1]+""
+			return unless l[2] == x[2]+""
+			return unless l[3] == x[3]+""
+
+			z = if @score0.length > @score1.length then {win:1,lose:0} else {win:0,lose:1}
+			emit w+"", z
+
+		r = (key, values) ->
+			res = {win:0, lose:0}
+			for v in values
+				res.win += v.win
+				res.lose += v.lose
+			return res
+
+		mapReduceCfg = out: {inline:1}
+
+		m = m.toString().replace(/AAAA/g, JSON.stringify(players));
+		Game.collection.mapReduce m,r,mapReduceCfg, (e, v, s) ->
+			return next(e) if e
+			res.json v ? {}
