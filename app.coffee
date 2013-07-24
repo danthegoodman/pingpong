@@ -9,9 +9,19 @@ global.path = () -> path.resolve(global.rootDir, arguments...)
 
 app = express()
 
+commonHeaders = (req, res, next)->
+	res.header "Access-Control-Allow-Origin", "*"
+	res.header "Access-Control-Allow-Methods", "POST,PUT,DELETE,GET,OPTIONS"
+	res.header "Access-Control-Allow-Headers", "Content-Type"
+	res.header "Cache-Control", "no-cache, no-store, must-revalidate"
+	res.header "Pragma", "no-cache"
+	res.header "Expires", "0"
+	next()
+
 app.configure ->
 	app.use express.errorHandler dumpExceptions: true
 	app.use express.bodyParser()
+	app.use commonHeaders
 	app.use app.router
 	app.use express.static global.path('public')
 
