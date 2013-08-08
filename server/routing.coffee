@@ -19,7 +19,6 @@ exports.handle = (app)->
 	logs =
 		'/log/errors' : 'log/server.err.log'
 		'/log/out'    : 'log/server.out.log'
-		'/log/db'     : 'log/db.log'
 
 	_.each views, (view, url)->
 		app.get url, (req, res) -> res.render view

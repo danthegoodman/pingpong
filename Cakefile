@@ -1,5 +1,4 @@
 fs = require 'fs'
-path = require 'path'
 spawn = require('child_process').spawn
 
 option '-v', '--verbose', 'Print out mongo db print statements'
@@ -16,12 +15,6 @@ task 'compile', 'Compile all client files', (options) ->
 
 task 'watch', 'Watch and compile all files as needed', (options) ->
 	doCompile watch: true
-
-task 'db', 'Run the database', (options) ->
-	p = path.resolve(dbpath)
-	fs.mkdirSync(p) unless path.existsSync(p)
-	console.log "Starting MongoDB"
-	run "mongod --dbpath #{p}", {quiet: not options.verbose, exit: 'MongoDB exited'}
 
 task 'serve', 'Serve the output under the development environment', (options) ->
 	process.env.NODE_ENV = 'development'
