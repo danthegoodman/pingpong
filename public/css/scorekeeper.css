@@ -1,0 +1,189 @@
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: moz-none;
+  user-select: none;
+}
+#playerPage #players div.selected,
+#game.leftServing .score.left { background-color: #6CA2D8; }
+
+#game.rightServing .score.right { background-color: #6CD8A2; }
+
+#game .leftServing .score.right,
+#game .rightServing .score.left { background-color: rgba(255,255,255, 0.4); }
+
+
+#playerPage .buttonSection{
+   position: absolute;
+   top: auto; right: 1em; bottom: 1em; left: 1em;
+}
+#playerPage #begin {
+  text-align: center;
+  background-color: #aaa;
+  border: 5px solid #333;
+  margin: 0 auto;
+  padding: 1em 0;
+  cursor: pointer;
+  width: 60%;
+}
+#playerPage #players{
+  position: absolute;
+  top: 0; right: 0; bottom: 5em; left: 0;
+  overflow: auto;
+}
+#playerPage #players div{
+  display: inline-block;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  min-width: 17.5%;
+  padding: 0.5em 0;
+  border: 1px solid black;
+  margin: 1em 0 0 2%;
+  text-align: center;
+  cursor: pointer;
+}
+#playerPage #tournament{
+  margin-top: 0.5em;
+  text-align: center;
+  font-size: 2em;
+}
+#playerPage #tournament p { margin: 0; }
+#playerPage #tournament aside { font-size: 0.25em; }
+
+
+
+#teamPage table{
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+#teamPage h1,
+#teamPage p{
+  text-align: center;
+  margin: 0;
+}
+#teamPage .main,
+#teamPage .ordered{
+  position: relative;
+  padding: 1em;
+  opacity: 0.5;
+}
+#teamPage .main:hover,
+#teamPage .ordered:hover{
+  background: rgba(0,0,0,0.1);
+}
+#teamPage .main{ clear: both;}
+#teamPage .ordered{ font-size: 70%;}
+#teamPage .significant{ opacity: 1; }
+#teamPage .mostSignificant{
+  background: rgba(0,0,0,0.2);
+}
+#teamPage #teamCancel{
+  position: absolute;
+  top: auto; right:0 ; bottom: 1em; left: 0;
+  clear: both;
+  text-align: center;
+  background-color: #aaa;
+  border: 5px solid #333;
+  margin: 0 auto;
+  padding: 1em 0;
+  cursor: pointer;
+  width: 60%;
+}
+
+
+
+#game{ top: 1em; bottom: 1em; }
+#game #tournamentStatus{
+  position: absolute;
+  top: -0.75em; right: 20%; bottom: auto; left: 20%;
+  text-align: center;
+  border: 2px solid black;
+  border-top-style: none;
+  font-size: 1.5em;
+  background-color: #ddd;
+  padding: 0.2em;
+}
+#game #tournamentStatus .left { float: left; }
+#game #tournamentStatus .right { float: right; }
+#game #tournamentStatus p { margin: 0; }
+#game #tournamentStatus .count { padding-left: 5px; }
+#game #tournamentStatus .star:before { content: "★"; }
+#game #cancelGame{
+  position: absolute;
+  top: -1.2em; right: 0.3em; bottom: auto; left: auto;
+  opacity: 0.5;
+  cursor: pointer;
+  font-size: 0.8em;
+}
+#game #cancelGame span{ font-family: 'Arial'; font-weight: bold;}
+#game #cancelGame:hover { opacity: 1; }
+#game #cancelGame:hover span{ color: #D00; }
+#game .teamContainer{
+  border-spacing: 0;
+  width: 20%;
+  vertical-align: middle;
+  height: 100%;
+  table-layout: fixed;
+  text-align: center;
+}
+#game .teamContainer.left { float: left; }
+#game .teamContainer.right { float: right; }
+#game .teamContainer td{
+  overflow: hidden;
+  font-family: serif;
+  font-size: 2.2em;
+  font-weight: 400;
+  cursor: pointer;
+  min-height: 50%;
+}
+#game .teamContainer td:hover{ background-color: rgba(0,0,0,0.3); }
+#game .scoreContainer{ overflow: hidden; height: 100%; }
+#game .scoreTable{
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: center;
+}
+#game .scoreTable td { width: 50%; border: 2px solid black; }
+#game .scoreTable td.score{
+  font-family: Helvetica, sans-serif;
+  font-size: 10em;
+  line-height: 1em;
+  cursor: default;
+}
+#game .scoreTable .button{
+  font-size: 20px;
+  height: 30px;
+  cursor: pointer;
+  background-color: #ccc;
+}
+#game .scoreTable .button:hover{ background-color: #aaa; }
+
+
+
+#gameover{
+  top: 1em; right: 1em; bottom: 1em; left: 1em;
+  text-align: center;
+  cursor: default;
+}
+#gameover table{width: 100%; height: 100%;}
+#gameover h1{ margin: 0.2em; font-size: 3.5em; }
+#gameover h2{ margin: 0.2em; font-size: 1em; }
+#gameover #subwinners{ font-size: 2.5em; }
+#gameover p{ font-size: 0.8em; margin: 0.5em;}
+#gameover #seconds{ display: inline-block; width: 35px;}
+#gameover .buttons div{
+    width: 14em;
+    font-size: 0.9em;
+    background-color: #aaa;
+    border: 3px solid black;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    margin: 1.5em auto;
+    cursor: pointer;
+}
+#gameover .buttons div:hover{ background-color: #888; }
+#gameover .buttons div:first-child,
+#gameover .buttons div:last-child{font-size: 0.7em;}

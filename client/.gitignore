@@ -1,0 +1,3 @@
+packages
+.settings
+web/js/*.dart.js*

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Reports</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/reports.css">
+</head>
+<body>
+  <div id='bgimg'></div>
+  <div id='asyncError' title='Server Error. Check Console.'
+       style="display:none"></div>
+  <div id="decoBar" class='header'></div>
+  <div class='selectBar'>
+    Select a report:
+    <select id="report"></select>
+  </div>
+
+  <section id="tournament" class="page">
+    <div class="container">
+      <div class="standings">
+        <h1>Standings</h1>
+        <table></table>
+      </div>
+      <div class="details">
+        <h1>Details</h1>
+        <table></table>
+      </div>
+    </div>
+  </section>
+
+  <section id="allGames" class="page">
+    <table class='header'>
+      <tr>
+        <th class='name'></th>
+        <th class='games'>Games</th>
+        <th class='win'>Wins</th>
+        <th class='lose'>Losses</th>
+        <th class='scoreWon'>Points</th>
+        <th class='scoreLost'>Lost</th>
+        <th class='scoreRatio'>Ratio</th>
+        <th class='serveGood'>Serves</th>
+        <th class='serveBad'>Misses</th>
+        <th class='serveRatio'>Ratio</th>
+      </tr>
+    </table>
+    <div class='container'>
+      <table class='players'></table>
+    </div>
+  </section>
+
+  <script type="application/dart" src="js/reports.dart"></script>
+  <script src="lib/dart.js"></script>
+</body>
+</html>

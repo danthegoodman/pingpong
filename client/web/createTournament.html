@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Start a new Tournament</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/createTournament.css">
+</head>
+<body>
+  <div id='bgimg'></div>
+  <div id='asyncError' title='Server Error. Check Console.'
+       style="display:none"></div>
+
+  <h1>Start A New Tournament</h1>
+  <p>
+    Title:
+    <input id="title" type="text"/>
+  </p>
+
+  <p>
+    Type:
+    <select id="type"></select>
+  </p>
+
+  <button id='create'>Create</button>
+
+  <p>Select players participating in tournament</p>
+
+  <div id="players"></div>
+
+  <script type="application/dart" src="js/createTournament.dart"></script>
+  <script src="lib/dart.js"></script>
+</body>
+</html>
