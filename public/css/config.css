@@ -42,3 +42,12 @@ aside{ font-size: 0.6em; }
 .player input,
 .player button{ width: 200px; }
 .player #active{ color: #6CD8A0; }
+
+#toScorekeeper {
+  color: black;
+  position: absolute;
+  bottom: 0.5em;
+  right: 0.5em;
+  cursor: pointer;
+  font-size: 1.6em;
+}
