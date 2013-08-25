@@ -1,18 +1,12 @@
 library us.kirchmeier.pingpong.common;
 
 import 'dart:html';
-import 'dart:json' as json;
-
-import 'dart:async';
-import 'common/page_manager.dart';
-import 'common/models.dart';
-import 'common/ajax.dart';
 
 export 'dart:async';
+export 'common/button_mappings.dart';
 export 'common/page_manager.dart';
 export 'common/models.dart';
 export 'common/ajax.dart';
-
 
 main(){
   print("""Did you know that there are some "hidden" pages? They may not
@@ -20,15 +14,6 @@ interest you, but navigate to '/index' to see the complete list.
 """);
 
   query("#asyncError").style.display = '';
-}
-
-Map<String, String> readShortcuts(){
-  var s = window.localStorage['shortcuts'];
-  try {
-    return json.parse(s);
-  } catch (e){
-    return {'Q': '01', 'P':'10', 'Z':'00', 'M':'11'};
-  }
 }
 
 //#-------------- Async Handler ---------------#

@@ -38,19 +38,16 @@ class _GlobalKeyHandler{
   bool _isAttached = false;
   Timer _undoTimer;
   Timer _scoreTimer;
-  String _lastChar;    // detection for bad serve
-  String _currentChar; // Prevents Repetition
-  String _activeChar;  // Char event fired on
-  Map<String, PlayerKeyEvent> _keyLookup = {};
+  Button _lastButton;    // detection for bad serve
+  Button _currentButton; // Prevents Repetition
+  Button _activeButton;  // Button event fired on
 
   StreamController undoStream = new StreamController.broadcast();
   StreamController badServeStream = new StreamController.broadcast();
   StreamController<PlayerKeyEvent> scoreStream = new StreamController<PlayerKeyEvent>.broadcast();
 
   _GlobalKeyHandler(){
-    readShortcuts().forEach((String key, String team){
-      _keyLookup[key] = new PlayerKeyEvent(int.parse(team[0]), int.parse(team[1]));
-    });
+    ButtonMappings.init();
   }
 
   void ensureAttached(){
@@ -61,14 +58,14 @@ class _GlobalKeyHandler{
   }
 
   void _onKeyDown(KeyboardEvent e){
-    String ch = new String.fromCharCode(e.which);
-    if(!_keyLookup.containsKey(ch)) return;
-    if(_currentChar != null) return;
+    Button b = ButtonMappings.findByKeyboardEvent(e);
+    if(b == null) return;
+    if(_currentButton != null) return;
 
-    _currentChar = ch;
-    _activeChar = ch;
-    if(_lastChar != null){
-      if(_lastChar != ch) return;
+    _currentButton = b;
+    _activeButton = b;
+    if(_lastButton != null){
+      if(_lastButton != b) return;
       if(_scoreTimer == null) return;
       badServeStream.add(null);
       _clearAllTimeouts();
@@ -79,19 +76,20 @@ class _GlobalKeyHandler{
   }
 
   void _onKeyUp(KeyboardEvent e){
-    String ch = new String.fromCharCode(e.which);
-    if(_currentChar != ch) return;
+    Button b = ButtonMappings.findByKeyboardEvent(e);
+    if(b == null) return;
+    if(_currentButton != b) return;
 
     bool didUndoFire = (_undoTimer == null);
     if(!didUndoFire){
       _clearUndoTimeout();
-      _lastChar = ch;
+      _lastButton = b;
     }
-    _currentChar = null;
+    _currentButton = null;
   }
 
   void _onScoreTimeout(){
-    scoreStream.add(_keyLookup[_activeChar]);
+    scoreStream.add(new PlayerKeyEvent._fromButton(_activeButton));
     _clearAllTimeouts();
   }
 
@@ -106,7 +104,7 @@ class _GlobalKeyHandler{
       _scoreTimer.cancel();
       _scoreTimer = null;
     }
-    _lastChar = null;
+    _lastButton = null;
   }
 
   void _clearUndoTimeout(){
@@ -120,5 +118,8 @@ class _GlobalKeyHandler{
 class PlayerKeyEvent{
   final int team;
   final int position;
-  const PlayerKeyEvent(this.team, this.position);
+
+  PlayerKeyEvent._fromButton(Button b):
+    team = b.team,
+    position = b.position;
 }
