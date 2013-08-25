@@ -5,11 +5,16 @@ import 'dart:html';
 PageManager_Instance PageManager = new PageManager_Instance();
 
 class PageManager_Instance{
-  Map<Type, ManagerPage> _pages = new Map<Type, ManagerPage>();
-  ManagerPage _current;
+  Map<Type, _PageLookup> _pages = new Map<Type, _PageLookup>();
+  _PageLookup _current;
 
   void add(ManagerPage page){
-    _pages[page.runtimeType] = page;
+    _pages[page.runtimeType] = new _PageLookup(page);
+  }
+
+  void addWithLink(ManagerPage page, Element link){
+    _pages[page.runtimeType] = new _PageLookup(page, link);
+    link.onClick.listen((q)=> goto(page.runtimeType));
   }
 
   bool isCurrent(Type page){
@@ -17,17 +22,23 @@ class PageManager_Instance{
   }
 
   void goto(Type page){
-    var prev = _current;
-    var next = _pages[page];
+    _PageLookup prev = _current;
+    _PageLookup next = _pages[page];
     _current = next;
 
     if(prev != null){
-      prev.onHide();
-      _fadeOut(prev.element);
+      prev.page.onHide();
+      if(prev.link != null){
+        prev.link.classes.remove('selected');
+      }
+      _fadeOut(prev.page.element);
     }
     if(next != null){
-      next.onShow();
-      _fadeIn(next.element, delay: prev != null);
+      next.page.onShow();
+      if(next.link != null){
+        next.link.classes.add('selected');
+      }
+      _fadeIn(next.page.element, delay: prev != null);
     }
   }
 }
@@ -42,6 +53,12 @@ void _fadeIn(Element e, {delay: true}){
   e.style..transitionDelay = delay ? "500ms" : ""
     ..opacity = "1"
     ..zIndex = "1";
+}
+
+class _PageLookup {
+  final ManagerPage page;
+  final Element link;
+  _PageLookup(this.page, [this.link = null]);
 }
 
 abstract class ManagerPage{
