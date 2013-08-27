@@ -6,7 +6,12 @@
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/scorekeeper.css">
   <script src="lib/soundmanager2.min.js"></script>
-  <script>soundManager.url = "lib"</script>
+  <script>soundManager.setup({
+     url: '/lib',
+     preferFlash: false,
+     useHighPerformance: true,
+     flashVersion: 9,
+   })</script>
 </head>
 <body>
   <div id='bgimg'></div>
