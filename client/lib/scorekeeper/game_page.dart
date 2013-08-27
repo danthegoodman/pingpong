@@ -92,7 +92,8 @@ class NameCell{
     _position = (type == 'serve' ? 0 : 1);
     element = query("#$type$_team");
     element.onClick.listen(_onClick);
-    _keyHandler.onScore.where((PlayerKeyEvent p)=> p.team == _team && p.position == _position).listen(_onClick);
+    _keyHandler.onScore.where(_filterPoint).listen(_onClick);
+    _keyHandler.onMiss.where(_filterPoint).listen(_onMiss);
   }
 
   void redraw(){
@@ -108,6 +109,26 @@ class NameCell{
     Player player = playerBasedOnScore(_team, _position);
     addGamePointBy(player);
   }
+
+  void _onMiss(q){
+    int score = GAME.totalScore;
+
+    bool flipPosition;
+    if(score < 40){
+      flipPosition = (score % 10 >= 5) == (_team != 0);
+    } else {
+      flipPosition = (score % 2 >= 1) == (_team != 0);
+    }
+
+    int t = (_team-1).abs();
+    int p = _position;
+    if(flipPosition) p = (p-1).abs();
+
+    Player player = playerBasedOnScore(t, p);
+    addGamePointBy(player);
+  }
+
+  bool _filterPoint(PlayerKeyEvent p) =>  p.team == _team && p.position == _position;
 }
 
 class ScoreCell{

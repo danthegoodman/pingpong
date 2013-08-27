@@ -16,16 +16,19 @@ class KeyHandler {
   Stream _undo;
   Stream _badServe;
   Stream _score;
+  Stream _miss;
 
   Stream get onUndo => _undo;
   Stream get onBadServe => _badServe;
   Stream<PlayerKeyEvent> get onScore => _score;
+  Stream<PlayerKeyEvent> get onMiss => _miss;
 
   KeyHandler(){
     _global.ensureAttached();
     _undo = _global.undoStream.stream.where(_isEnabled);
     _badServe = _global.badServeStream.stream.where(_isEnabled);
     _score = _global.scoreStream.stream.where(_isEnabled);
+    _miss = _global.missStream.stream.where(_isEnabled);
   }
 
   _isEnabled([q])=> _enabled;
@@ -38,13 +41,18 @@ class _GlobalKeyHandler{
   bool _isAttached = false;
   Timer _undoTimer;
   Timer _scoreTimer;
-  Button _lastButton;    // detection for bad serve
-  Button _currentButton; // Prevents Repetition
-  Button _activeButton;  // Button event fired on
+
+  /// The current button down.
+  /// No other buttons are allowed until released.
+  Button _currentButton;
+
+  /// The last button pressed and released.
+  Button _lastButton;
 
   StreamController undoStream = new StreamController.broadcast();
   StreamController badServeStream = new StreamController.broadcast();
   StreamController<PlayerKeyEvent> scoreStream = new StreamController<PlayerKeyEvent>.broadcast();
+  StreamController<PlayerKeyEvent> missStream = new StreamController<PlayerKeyEvent>.broadcast();
 
   _GlobalKeyHandler(){
     ButtonMappings.init();
@@ -63,13 +71,12 @@ class _GlobalKeyHandler{
     if(_currentButton != null) return;
 
     _currentButton = b;
-    _activeButton = b;
-    if(_lastButton != null){
-      if(_lastButton != b) return;
+    if(_lastButton != null && _lastButton == b && b.index == 1){
       if(_scoreTimer == null) return;
       badServeStream.add(null);
       _clearAllTimeouts();
     } else {
+      _clearAllTimeouts();
       _undoTimer = new Timer(_undoTimeframe, _onUndoTimeout);
       _scoreTimer = new Timer(_badServeTimeframe, _onScoreTimeout);
     }
@@ -89,7 +96,8 @@ class _GlobalKeyHandler{
   }
 
   void _onScoreTimeout(){
-    scoreStream.add(new PlayerKeyEvent._fromButton(_activeButton));
+    var s = _lastButton.index == 0 ? scoreStream : missStream;
+    s.add(new PlayerKeyEvent._fromButton(_lastButton));
     _clearAllTimeouts();
   }
 
