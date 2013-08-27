@@ -160,9 +160,7 @@ class _TeamGroup extends _HasCounts{
       var p = t.first.players;
       teams.add(new _Team([p[0], p[3], p[2], p[1]]));
     }
-    print("$teams");
     teams.sort();
-    print("$teams");
     for(var t in teams){
       win += t.win;
       lose += t.lose;
