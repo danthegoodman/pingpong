@@ -78,7 +78,9 @@ class _GlobalKeyHandler{
     } else {
       _clearAllTimeouts();
       _undoTimer = new Timer(_undoTimeframe, _onUndoTimeout);
-      _scoreTimer = new Timer(_badServeTimeframe, _onScoreTimeout);
+      if(b.index == 1){
+        _scoreTimer = new Timer(_badServeTimeframe, _onScoreTimeout);
+      }
     }
   }
 
@@ -91,6 +93,9 @@ class _GlobalKeyHandler{
     if(!didUndoFire){
       _clearUndoTimeout();
       _lastButton = b;
+      if(b.index == 0){
+        _onScoreTimeout();
+      }
     }
     _currentButton = null;
   }
