@@ -4,7 +4,7 @@ import 'sc_common.dart';
 import 'package:js/js.dart' as js;
 
 initSoundManager(){
-  js.context.soundManager.onready(new js.Callback.once(_onSoundManagerReady));
+  js.context['soundManager'].onready(new js.Callback.once(_onSoundManagerReady));
 }
 
 _onSoundManagerReady(q){
@@ -31,7 +31,7 @@ _onScoreChange(ScoreChange sc){
   }
 
   if(sound.isEmpty) return;
-  js.context.soundManager.play(sound);
+  js.context['soundManager'].play(sound);
 }
 
 _initSound(String id, {volume: 100}){
@@ -40,5 +40,5 @@ _initSound(String id, {volume: 100}){
       'url': "sound/${id}.mp3",
       'autoLoad': true,
       'volume': volume};
-  js.context.soundManager.createSound(js.map(ops));
+  js.context['soundManager'].createSound(js.map(ops));
 }
