@@ -12,17 +12,17 @@ TextInputElement _title;
 SelectElement _type;
 
 void main(){
-  _type = query("#type");
-  _title = query("#title");
+  _type = querySelector("#type");
+  _title = querySelector("#title");
 
   PlayerManager.loadAll().then((q){
-    query("#players").children.addAll(PlayerManager.models.map((p)=> _createPlayerButton(p)));
+    querySelector("#players").children.addAll(PlayerManager.models.map((p)=> _createPlayerButton(p)));
   });
   TOURNAMENT_TYPES.forEach((value, name){
-    _type.append(new OptionElement(name, value));
+    _type.append(new OptionElement(data: name, value: value));
   });
 
-  query("#create").onClick.listen(_onCreateClick);
+  querySelector("#create").onClick.listen(_onCreateClick);
 }
 
 void _onCreateClick(q){

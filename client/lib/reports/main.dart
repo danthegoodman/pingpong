@@ -14,7 +14,7 @@ void main(){
   PageManager.add(new AllGamesReport());
   PageManager.add(tournyReport);
 
-  _reportSelect = query("#report");
+  _reportSelect = querySelector("#report");
   _reportSelect.onChange.listen(_onReportSelectChange);
 
   Future playersFetched = PlayerManager.loadAll();
@@ -33,7 +33,7 @@ void main(){
 }
 
 void _populateSelect(){
-  var options = _reportOptions.keys.map((n)=>new OptionElement(n));
+  var options = _reportOptions.keys.map((n)=>new OptionElement(data: n, value: n));
   options.first.selected = true;
   _reportSelect.children.addAll(options);
 }

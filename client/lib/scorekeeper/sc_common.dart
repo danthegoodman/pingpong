@@ -1,9 +1,9 @@
 library us.kirchmeier.pingpong.scorekeeper.common;
 
 import 'package:pingpong/common.dart';
-import 'dart:math';
+import 'dart:math' as math;
 
-Random RNG = new Random(new DateTime.now().millisecondsSinceEpoch);
+math.Random RNG = new math.Random(new DateTime.now().millisecondsSinceEpoch);
 Game GAME;
 Tournament TOURNAMENT;
 

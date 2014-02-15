@@ -1,10 +1,10 @@
 library us.kirchmeier.pingpong.scorekeeper.sound_handler;
 
 import 'sc_common.dart';
-import 'package:js/js.dart' as js;
+import 'dart:js';
 
 initSoundManager(){
-  js.context['soundManager'].onready(new js.Callback.once(_onSoundManagerReady));
+  _soundManager.callMethod('onready', [new JsFunction.withThis(_onSoundManagerReady)]);
 }
 
 _onSoundManagerReady(q){
@@ -31,7 +31,7 @@ _onScoreChange(ScoreChange sc){
   }
 
   if(sound.isEmpty) return;
-  js.context['soundManager'].play(sound);
+  _soundManager.callMethod('play', [sound]);
 }
 
 _initSound(String id, {volume: 100}){
@@ -40,5 +40,7 @@ _initSound(String id, {volume: 100}){
       'url': "sound/${id}.mp3",
       'autoLoad': true,
       'volume': volume};
-  js.context['soundManager'].createSound(js.map(ops));
+  _soundManager.callMethod('createSound', [new JsObject.jsify(ops)]);
 }
+
+JsObject get _soundManager => context['soundManager'];
