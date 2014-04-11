@@ -69,7 +69,7 @@ class AllGamesReport extends ManagerPage{
 
     for(var p in players){
       var el = new TableRowElement()..className = 'player';
-      el.onClick.listen((_)=> PageManager.goto(PlayerReport, {'player': p}));
+      el.onClick.listen((_)=> PageManager.goto(PlayerReport, p));
       el.innerHtml = """
         <td class='name'>${p.name}</td>
         <td class='games'></td>

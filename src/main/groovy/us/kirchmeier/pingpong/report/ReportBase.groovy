@@ -5,6 +5,7 @@ import org.reflections.Reflections
 import spark.Request
 import spark.Response
 import us.kirchmeier.pingpong.model.GameModel
+import us.kirchmeier.pingpong.model.PlayerModel
 import us.kirchmeier.pingpong.mongo.GMongo
 import us.kirchmeier.pingpong.mongo.GMongoCollection
 import us.kirchmeier.pingpong.util.GRoute
@@ -18,7 +19,7 @@ abstract class ReportBase implements GRoute{
     abstract String getCollectionName()
     abstract String getPath()
 
-    abstract void update(GameModel game)
+    abstract void update(GameModel game, Map<Integer, PlayerModel> allPlayers)
     abstract Object handle(Request request, Response response, Map jsonBody)
 
     @Memoized(protectedCacheSize = 1)

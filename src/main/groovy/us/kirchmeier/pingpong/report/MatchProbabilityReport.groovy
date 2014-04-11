@@ -3,25 +3,29 @@ package us.kirchmeier.pingpong.report
 import spark.Request
 import spark.Response
 import us.kirchmeier.pingpong.model.GameModel
+import us.kirchmeier.pingpong.model.PlayerModel
 
 class MatchProbabilityReport extends ReportBase {
     String path = 'matchProbability'
     String collectionName = 'matchProbability'
 
     @Override
-    void update(GameModel game) {
+    void update(GameModel game, Map<Integer, PlayerModel> allPlayers) {
+        def anyAreGuestPlayers = game.players.any{ allPlayers[it].guest }
+        if(anyAreGuestPlayers) return;
+
         //Reorder the players to reduce permutations.
         def players = game.players;
         def pivotNdx = players.indexOf(players.min())
         players = players.drop(pivotNdx) + players.take(pivotNdx)
 
-        def allPlayers = players.sort(false).join(',')
+        def orderedPlayers = players.sort(false).join(',')
         def score0 = game.getScore(0)
         def score1 = game.getScore(1)
         def win0 = (score0 > score1 ? 1 : 0)
         def win1 = (score0 < score1 ? 1 : 0)
         collection.update(
-                [_id: players.join(','), players: allPlayers],
+                [_id: players.join(','), players: orderedPlayers],
                 [$inc: [team0: win0, team1: win1, score0: score0, score1: score1]],
                 [upsert: true]
         )

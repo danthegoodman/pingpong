@@ -5,7 +5,7 @@ bool _showGuests = false;
 
 bool canShowPlayer(Player player){
   if(!player.active) return _showInactive;
-  if(player.name.startsWith("Guest")) return _showGuests;
+  if(player.guest) return _showGuests;
   return true;
 }
 

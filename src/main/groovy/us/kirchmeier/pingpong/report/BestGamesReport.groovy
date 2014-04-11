@@ -3,17 +3,17 @@ package us.kirchmeier.pingpong.report
 import spark.Request
 import spark.Response
 import us.kirchmeier.pingpong.model.GameModel
+import us.kirchmeier.pingpong.model.PlayerModel
 
 class BestGamesReport extends ReportBase {
     String path = 'bestGames'
     String collectionName = 'bestGames'
 
     @Override
-    void update(GameModel game) {
-        if(!game.points){
-            println "GAME HAS NO POINTS: ${game.toMap()}";
-            return;
-        }
+    void update(GameModel game, Map<Integer, PlayerModel> allPlayers) {
+        def allAreFreqentPlayers = game.players.every { allPlayers[it].frequent }
+        if (!allAreFreqentPlayers) return;
+
         def record = collection.findOne()?.toMap() ?: [_id: 0];
         def updated = false;
         updated |= updateHighestScore(record, game)

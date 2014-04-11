@@ -3,13 +3,14 @@ package us.kirchmeier.pingpong.report
 import spark.Request
 import spark.Response
 import us.kirchmeier.pingpong.model.GameModel
+import us.kirchmeier.pingpong.model.PlayerModel
 
 class ServeCountsReport extends ReportBase {
     String path = 'serveCounts'
     String collectionName = 'serveCounts'
 
     @Override
-    void update(GameModel game) {
+    void update(GameModel game, Map<Integer, PlayerModel> allPlayers) {
         def players = game.players
         def playerServes = new HashMap<Integer, Map>()
         game.points.each{ point ->

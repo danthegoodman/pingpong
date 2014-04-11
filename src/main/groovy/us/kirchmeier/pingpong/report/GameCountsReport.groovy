@@ -3,13 +3,14 @@ package us.kirchmeier.pingpong.report
 import spark.Request
 import spark.Response
 import us.kirchmeier.pingpong.model.GameModel
+import us.kirchmeier.pingpong.model.PlayerModel
 
 class GameCountsReport extends ReportBase {
     String path = 'gameCounts'
     String collectionName = 'gameCounts'
 
     @Override
-    void update(GameModel game) {
+    void update(GameModel game, Map<Integer, PlayerModel> allPlayers) {
         def players = game.players
         def team0Won = game.getScore(0) > game.getScore(1)
 
