@@ -1,0 +1,33 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy:2.2.2'
+    compile 'org.codehaus.groovy:groovy-json:2.2.2'
+    compile 'org.mongodb:mongo-java-driver:2.11.4'
+    compile 'com.sparkjava:spark-core:1.1.1'
+    compile 'org.reflections:reflections:0.9.9-RC1'
+    compile 'commons-cli:commons-cli:1.2'
+
+    runtime 'org.slf4j:slf4j-simple:1.7.6'
+    testCompile 'org.testng:testng:6.8.8'
+}
+
+task 'run'(type: JavaExec, dependsOn: 'classes') {
+    main = 'us.kirchmeier.pingpong.Server'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task 'migrate'(type: JavaExec, dependsOn: 'classes') {
+    main = 'us.kirchmeier.pingpong.DataMigrator'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+test {
+    useTestNG()
+    systemProperty 'pingpong.db', 'pingpong_test'
+}

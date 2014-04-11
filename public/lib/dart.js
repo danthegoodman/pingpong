@@ -1,1 +1,0 @@
-../../client/packages/browser/dart.js

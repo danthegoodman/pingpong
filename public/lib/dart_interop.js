@@ -1,1 +1,0 @@
-../../client/packages/js/dart_interop.js

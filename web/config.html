@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Configuration</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/config.css">
+</head>
+<body>
+  <div id="headerBar">
+    <div id="buttonTab">Buttons</div>
+    <div id="playerTab">Players</div>
+  </div>
+
+  <section id="buttonSection" class="page">
+    <h1>Keyboard Shortcuts for the Score Keeper</h1>
+    <aside>These will only affect this machine</aside>
+    <aside>Click on the box and press the desired button</aside>
+    <aside>Left and Right when facing the score machine</aside>
+
+   <div class='key'>
+      <label>Left Side, Serving</label>
+      <input id="sc00" type="submit" value="" />
+    </div>
+
+    <div class='key'>
+      <label>Left Side, Standby</label>
+      <input id="sc01" type="submit" value="" />
+    </div>
+
+    <div class='key'>
+      <label>Right Side, Serving</label>
+      <input id="sc10" type="submit" value="" />
+    </div>
+
+    <div class='key last'>
+      <label>Right Side, Standby</label>
+      <input id="sc11" type="submit" value="" />
+    </div>
+  </section>
+
+  <section id="playerSection" class="page">
+    <h1>Update Player Information</h1>
+    <aside>An inactive player will not appear in the list
+           when creating games</aside>
+
+    <div class='player'>
+      <select id="players"></select>
+    </div>
+
+    <div class='player'>
+      <button id="addNewPlayer">Add New Player</button>
+    </div>
+
+    <div class='player'>
+      <label for="name">Name:</label>
+      <input type="text" id="name"/>
+    </div>
+
+    <div class='player'>
+      <div id="active" class="checkbox">Active</div>
+    </div>
+  </section>
+
+  <a href="scorekeeper.html" id="toScorekeeper">Return to Score Keeper</a>
+  <script type="application/dart" src="config.dart"></script>
+  <script src="packages/browser/dart.js"></script>
+</body>
+</html>

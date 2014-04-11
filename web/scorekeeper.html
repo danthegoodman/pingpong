@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>The Score Keeper</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/scorekeeper.css">
+  <script src="lib/soundmanager2.min.js"></script>
+  <script>soundManager.setup({
+     url: '/lib',
+     preferFlash: false,
+     useHighPerformance: true,
+     flashVersion: 9,
+   })</script>
+</head>
+<body>
+  <section id="playerPage" class="page">
+    <div id="players"></div>
+    <div class='buttonSection'>
+      <div class="begin">Begin</div>
+    </div>
+    <a href="config.html" id="configure" class="icon-cog"></a>
+  </section>
+
+  <section id="teamPage" class="page">
+    <table><tbody class="container"></tbody></table>
+    <div class="cancel">Return to Player Selection</div>
+  </section>
+
+  <section id="game" class="page">
+    <div class="cancel">Cancel Game <span>X</span></div>
+
+    <table class='teamContainer left'>
+      <tr><td class="player2"></td></tr>
+      <tr><td class="player0"></td></tr>
+    </table>
+    <table class='teamContainer right'>
+      <tr><td class="player1"></td></tr>
+      <tr><td class="player3"></td></tr>
+    </table>
+    <div class='scoreContainer'>
+      <table class='scoreTable'>
+        <tr>
+          <td class="score0 score left"></td>
+          <td class="score1 score right"></td>
+        </tr>
+        <tr>
+          <td class='undo button'>Undo Last Score</td>
+          <td class='badServe button'>Bad Serve</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="gameover" class="page">
+    <table>
+      <tr>
+        <td>
+          <h2 class="winTitle"></h2>
+          <h1 class="winners"></h1>
+        </td>
+      </tr>
+      <tr>
+        <td class='buttons'>
+          <div class="undo">Undo Last Score</div>
+          <div class="playAnother">Play Another Game</div>
+          <div class="returnToSetup">Return to Player Selection</div>
+        </td>
+      </tr>
+    </table>
+  </section>
+
+  <script type="application/dart" src="scorekeeper.dart"></script>
+  <script src="packages/browser/dart.js"></script>
+</body>
+</html>

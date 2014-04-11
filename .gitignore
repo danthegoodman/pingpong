@@ -1,4 +1,7 @@
-log/
-public/out/
-dbdata/
-node_modules/
+packages
+
+.idea/
+*.iml
+
+build/
+.gradle/

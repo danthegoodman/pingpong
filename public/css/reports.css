@@ -1,105 +1,63 @@
-h1{margin: 0;}
+h1 { margin: 0; }
 
-table{
-  width: 100%;
-  height: 100%;
+table {
   vertical-align: middle;
   text-align: center;
   border-collapse: collapse;
 }
 
-#decoBar,
-.selectBar,
-.header {
-  color: #fff;
-  height: 2.5em;
-  font-size: 0.8em;
+th,
+td {
+  font-weight: normal;
+  padding: 0.25em 0.5em;
 }
 
-#decoBar{
-  position: absolute;
-  top: 0; right:0; bottom: auto; left: 0;
-  z-index: -1;
-  background-color: rgba(0,0,0,0.8);
+button{
+  border: 1px solid black;
+  display: inline-block;
+  padding: 0.5em 1em;
+  background-color: #aaa;
 }
 
-.selectBar{
-  z-index: 2;
-  position: absolute;
-  top: 0; right: auto; bottom: auto; left: 0;
-  line-height: 2.5em;
-  padding-left: 0.5em;
-}
-.selectBar #report{ margin- left: 0.5em; }
+.page{ overflow: auto; }
 
-.header{
-  line-height: 1em;
-  border-collapse: collapse;
-  margin: 0;
+.centerizer{
+  height: 100%;
   width: 100%;
 }
 
-.header th{ font-weight: normal; }
-
-.container{
-  overflow: auto;
-  position: absolute;
-  top: 2em; right: 0; bottom: 0; left: 0;
+#settingsLink {
+  font-size: 1.8em;
+  position: fixed;
+  top: 0;
+  right: 0.25em;
+  z-index: 1;
+  padding: 0.2em;
+  float: left;
+  margin: 0;
+  cursor: pointer;
+  color: #222;
 }
+#settingsLink:hover { color: #444; }
 
-#allGames .players tr:nth-child(even){ background-color: rgba(0,0,0,0.05); }
-#allGames .players tr:hover{ color: #800 }
-#allGames .players td:not(.name){ font-family: Menlo, monospace; }
 
-#allGames .name{ padding-left: 0.5em; text-align: left;}
-#allGames .games { width: 110px; }
-#allGames .win { width: 110px; }
-#allGames .lose { width: 110px; }
-#allGames .scoreWon { width: 140px; }
-#allGames .scoreLost { width: 140px; }
-#allGames .scoreRatio { width: 140px; }
-#allGames .serveGood { width: 140px; }
-#allGames .serveBad { width: 140px; }
-#allGames .serveRatio { width: 140px; }
+#allGames table { margin: 1em auto; }
+#allGames tr:nth-child(even){ background-color: rgba(0,0,0,0.05); }
+
+#allGames .players th { border-bottom: 1px solid black; }
+#allGames .players tbody tr:hover{ color: #800; cursor: pointer; }
+#allGames .players td:not(.name){ font-family: Menlo, monospace; padding: 0.25em 1.5em;}
+
+#allGames .name{ padding: 0.25em 0.5em; text-align: left;}
 
 #allGames .games,
-#allGames .scoreWon,
-#allGames .serveGood { border-left: 1px solid rgba(0,0,0,0.3); }
+#allGames .scoreTotal,
+#allGames .serveTotal { border-left: 1px solid rgba(0,0,0,0.3); }
 
+#allGames .bestGames th { border-right: 1px solid black; }
+#allGames .bestGames .team { margin-bottom: 0.25em; }
+#allGames .bestGames .score,
+#allGames .bestGames .date{ font-family: Menlo, monospace; display: inline-block; margin: 0 1em;}
 
-
-#tournament h1{ margin-bottom: 0.5em; text-align: center;}
-#tournament table{ height: auto; }
-#tournament td{
-  padding: 0 1em;
-  height: 2em;
-  line-height: 2em;
-  border-top: 1px solid rgba(0,0,0,0.3);
-  text-align: left;
-}
-#tournament td:last-child{ text-align: right; }
-#tournament tr:first-child td{ border: 0; }
-#tournament .standings{
-  position: absolute;
-  top: 0.5em; right: 60%; bottom: 0.5em; left:0;
-  padding: 0 2em;
-  border-right: 1px solid rgba(0,0,0,0.3);
-}
-#tournament .standings tr{ cursor: pointer; }
-#tournament .standings .selected{ background-color:#6CA2D8; }
-#tournament .details{
-  position: absolute;
-  top: 0.5em; right:0; bottom: 0.5em; left: 40%;
-  padding: 0 2em;
-}
-#tournament .details .game{
-  font-family: arial, sans-serif;
-  display:inline-block;
-  padding: 0 0.5em;
-  margin: 0.25em 0 0.25em 1em;
-  line-height: 1.5em;
-  width: 4em;
-  text-align: center;
-}
-#tournament .details .win{ background-color: #6CD8A2; }
-#tournament .details .lose{ background-color: #D86C6C; }
+#settings { text-align: center; }
+#settings .checkbox{ margin: 1em; }

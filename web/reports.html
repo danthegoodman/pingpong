@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Reports</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/reports.css">
+</head>
+<body>
+  <section id="allGames" class="page">
+    <div id="settingsLink" class="icon-cog"></div>
+    <table class='players'>
+      <thead>
+        <tr>
+          <th class='name'></th>
+          <th class='games'>Games</th>
+          <th class='winRatio'>Win Ratio</th>
+          <th class='scoreTotal'>Total Points</th>
+          <th class='serveTotal'>Serves</th>
+          <th class='serveRatio'>Ratio</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <table class="bestGames">
+      <tr>
+        <th>Highest Scoring Game:</th>
+        <td class="highestScoringGame"></td>
+      </tr>
+      <tr>
+        <th>Lowest Scoring Game:</th>
+        <td class="lowestScoringGame"></td>
+      </tr>
+      <tr>
+        <th>Longest Team Streak:</th>
+        <td class="longestTeamStreak"></td>
+      </tr>
+      <tr>
+        <th>Longest Player Streak:</th>
+        <td class="longestPlayerStreak"></td>
+      </tr>
+    </table>
+  </section>
+
+  <section id="settings" class="page">
+    <table class="centerizer"><tr><td>
+      <div class="showInactivePlayers checkbox">Show Inactive Players</div>
+      <div class="showGuestPlayers checkbox">Show Guest Players</div>
+      <button class="returnFromSettings">Return to Reports</button>
+    </td></tr></table>
+  </section>
+
+  <section id="playerReport" class="page">
+    <div>Player Name</div>
+    Game Stats: win/lose/ratio<br/>
+    score stats: total, against players<br/>
+    double stats: most played with<br/>
+    longest point streak<br/>
+    longest bad serve streak<br/>
+    game ending bad serves<br/>
+  </section>
+
+  <script type="application/dart" src="reports.dart"></script>
+  <script src="packages/browser/dart.js"></script>
+</body>
+</html>
