@@ -2,7 +2,7 @@ body{ text-align: center; }
 
 input{
   background-color: #444;
-  border: 4px solid #444;
+  border: 0.2em solid #444;
   color: #eee;
   text-align: center;
   outline: 0;
@@ -11,38 +11,10 @@ input{
 
 input:focus{ border-color: #6CA2D8; }
 
-button{
-  border-color: #444;
-  border-style: none solid;
-  border-width: 4px;
-  background-color: #444;
-  color: #eee;
-}
-
-h1{ margin: 0.2em;}
+h1{ margin: 0.5em;}
 aside{ font-size: 0.6em; }
 
 .page{ top: 3em; }
-
-.key,
-.player{
-  margin: 0.5em auto;
-  width: 75%;
-}
-
-.key label{ display: inline-block; width: 200px; }
-.key input{ width: 45px; }
-.key.last{
-    padding-bottom: 1em;
-    margin-bottom: 1em;
-    border-bottom: 1px solid rgba(0,0,0,0.5);
-}
-
-.player select{ width: 250px; }
-.player label{ display: inline-block; width: 100px; }
-.player input,
-.player button{ width: 200px; }
-.player #active{ color: #6CD8A0; }
 
 #headerBar{
   overflow: hidden;
@@ -50,6 +22,7 @@ aside{ font-size: 0.6em; }
   border-bottom: 1px solid black;
   font-size: 0; /* Remove inline-block spacing */
 }
+
 #headerBar div{
   display: inline-block;
   font-size: 20px;
@@ -61,6 +34,28 @@ aside{ font-size: 0.6em; }
 }
 #headerBar div:first-child{ border-left: 1px solid black; }
 #headerBar .selected{ background-color: rgba(0,0,0,0.5); color: white;}
+
+
+#buttonPage .key{
+  margin: 0.5em auto;
+  width: 75%;
+}
+#buttonPage label{ display: inline-block; width: 10em; }
+#buttonPage input{ width: 2em; }
+
+
+#playerPage .addNew { width: 10em; }
+#playerPage .playerSelector {
+  width: 20em;
+  border-top: 1px solid #444;
+  margin: 0.75em auto 0.75em;
+  padding-top: 0.5em;
+}
+#players{ width: 12em; border: 0; font-size: 0.8em; }
+
+#playerPage .checkbox{
+  margin: 0.75em auto;
+}
 
 #toScorekeeper {
   color: black;

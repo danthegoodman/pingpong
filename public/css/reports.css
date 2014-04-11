@@ -12,13 +12,6 @@ td {
   padding: 0.25em 0.5em;
 }
 
-button{
-  border: 1px solid black;
-  display: inline-block;
-  padding: 0.5em 1em;
-  background-color: #aaa;
-}
-
 .page{ overflow: auto; }
 
 .centerizer{

@@ -1,36 +1,24 @@
 part of pingpong.config;
 
-final StreamController<Player> _playerDataChange = new StreamController<Player>.broadcast();
 
 class PlayerPage extends ManagerPage{
-  final Element element = querySelector("#playerSection");
+  final Element element = querySelector("#playerPage");
   final SelectElement _players = querySelector("#players");
-  final InputElement _name = querySelector("#name");
-  final _active = new Checkbox(querySelector("#active"));
+  final InputElement _name = querySelector("#playerName");
+  final _active = new Checkbox(querySelector("#playerActive"));
 
   PlayerPage(){
-    _playerDataChange.stream.listen(PlayerManager.save);
-
     _players.onChange.listen(_onSelectionChange);
     _name.onChange.listen(_onNameChange);
     _active.onChange.listen(_onActiveChange);
-    querySelector("#addNewPlayer").onClick.listen(_onAddNewPlayerClick);
+    querySelector("#playerPage .addNew").onClick.listen(_onAddNewPlayerClick);
 
-    PlayerManager.loadAll().then(_onPlayersLoad);
+    PlayerManager.onLoadAll.first.then(_redrawPlayers);
   }
 
   Player get _currentPlayer => PlayerManager.get(int.parse(_players.value));
 
-  _onPlayersLoad(_){
-    _players.children.clear();
-    var models = PlayerManager.models;
-    var opts = models.map((p)=> new PlayerOption(p).element);
-    _players.children.addAll(opts);
-    _players.value = "${models.first.id}";
-    _onSelectionChange();
-  }
-
-  _onSelectionChange([_]){
+  _onSelectionChange(_){
     var p = _currentPlayer;
     _name.value = p.name;
     _active.value = p.active;
@@ -38,34 +26,39 @@ class PlayerPage extends ManagerPage{
 
   _onNameChange(_){
     _currentPlayer.name = _name.value;
-    _playerDataChange.add(_currentPlayer);
+    PlayerManager.save(_currentPlayer);
+    _redrawPlayers();
   }
 
   _onActiveChange(_){
     _currentPlayer.active = _active.value;
-    _playerDataChange.add(_currentPlayer);
+    PlayerManager.save(_currentPlayer);
+    _redrawPlayers();
   }
 
   _onAddNewPlayerClick(_){
-    PlayerManager.create(new Player.brandNew()).then((Player p){
-      _players.append(new PlayerOption(p).element);
-      _players.value = p.id.toString();
-      _onSelectionChange();
-    });
-  }
-}
-
-class PlayerOption{
-  final OptionElement element = new OptionElement();
-  final Player player;
-
-  PlayerOption(this.player){
-    element.value = player.id.toString();
-    _playerDataChange.stream.where((p)=> p == player).listen(_redraw);
-    _redraw(null);
+    PlayerManager.create(new Player.brandNew()).then(_redrawPlayers);
   }
 
-  _redraw(_){
-    element.text = player.name;
+  _redrawPlayers([_]){
+    var currentVal = _players.value;
+    var normal = [];
+    var inactive = [];
+
+    for(var p in PlayerManager.models){
+      var l = (p.active ? normal : inactive);
+      var id = p.id.toString();
+      l.add(new OptionElement(data: p.name, value: id, selected: id == currentVal));
+    }
+
+    _players.children
+        ..clear()
+        ..add(new OptGroupElement()..label = "Active"..children = normal)
+        ..add(new OptGroupElement()..label = "Inactive"..children = inactive);
+
+    if(currentVal == ""){
+      _players.value = normal.first.value;
+      _onSelectionChange(null);
+    }
   }
 }

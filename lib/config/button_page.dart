@@ -6,7 +6,7 @@ class ButtonPage extends ManagerPage{
   Element element;
 
   ButtonPage(){
-    element = querySelector("#buttonSection");
+    element = querySelector("#buttonPage");
     _fields
       ..add(new ButtonField(0, 0))
       ..add(new ButtonField(0, 1))

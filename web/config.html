@@ -12,7 +12,7 @@
     <div id="playerTab">Players</div>
   </div>
 
-  <section id="buttonSection" class="page">
+  <section id="buttonPage" class="page">
     <h1>Keyboard Shortcuts for the Score Keeper</h1>
     <aside>These will only affect this machine</aside>
     <aside>Click on the box and press the desired button</aside>
@@ -39,26 +39,23 @@
     </div>
   </section>
 
-  <section id="playerSection" class="page">
+  <section id="playerPage" class="page">
     <h1>Update Player Information</h1>
-    <aside>An inactive player will not appear in the list
-           when creating games</aside>
 
-    <div class='player'>
+    <button class="addNew">Add New Player</button>
+
+    <div class='playerSelector'>
       <select id="players"></select>
     </div>
 
-    <div class='player'>
-      <button id="addNewPlayer">Add New Player</button>
+    <div>
+      <label for="playerName">Name:</label>
+      <input type="text" id="playerName"/>
     </div>
 
-    <div class='player'>
-      <label for="name">Name:</label>
-      <input type="text" id="name"/>
-    </div>
-
-    <div class='player'>
-      <div id="active" class="checkbox">Active</div>
+    <div id="playerActive" class="checkbox">
+      Active
+      <aside>An inactive player cannot join a game</aside>
     </div>
   </section>
 

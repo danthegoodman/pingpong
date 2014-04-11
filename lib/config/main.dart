@@ -8,7 +8,11 @@ part 'player_page.dart';
 
 void main(){
   common_main();
+  ButtonMappings.init();
   PageManager.addWithLink(new ButtonPage(), querySelector("#buttonTab"));
   PageManager.addWithLink(new PlayerPage(), querySelector("#playerTab"));
-  PageManager.goto(PlayerPage);
+
+  PlayerManager.loadAll().then((_){
+    PageManager.goto(PlayerPage);
+  });
 }

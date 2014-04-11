@@ -13,6 +13,10 @@ body{
 
 button{
   cursor: pointer;
+  border: 1px solid black;
+  display: inline-block;
+  padding: 0.3em 1em;
+  background-color: #aaa;
 }
 
 *[hidden]{ display: none !important; }

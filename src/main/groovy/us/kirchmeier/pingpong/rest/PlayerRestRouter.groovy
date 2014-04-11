@@ -15,7 +15,7 @@ class PlayerRestRouter extends ModelRestRouter {
     @Override
     Map create(Map model) {
         def idVal = mongo.sequences.findAndModify([_id: 'players'], [$inc: [seq: 1]]).toMap()
-        model._id = model[idVal.seq];
+        model._id = idVal.seq;
         return super.create(model)
     }
 }
