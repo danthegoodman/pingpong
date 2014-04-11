@@ -43,7 +43,15 @@ class PlayerPage extends ManagerPage{
   }
 
   void _onLoadAll(q){
-    _playersContainer.children = PlayerManager.models.map(_createPlayerButton);
+    var players = PlayerManager.models.toList();
+    players.sort((Player a, Player b){
+      int x = a.guest == false ? 0 : 1;
+      int y = b.guest == false ? 0 : 1;
+      if(x != y) return Comparable.compare(x, y);
+
+      return a.compareTo(b);
+    });
+    _playersContainer.children = players.map(_createPlayerButton);
   }
 
   Element _createPlayerButton(Player p){
