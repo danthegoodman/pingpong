@@ -3,7 +3,7 @@ part of pingpong.reports;
 final _settings = {
     'showInactive': false,
     'showGuests': false,
-    'showInfrequent': false,
+    'showInfrequent': true,
 };
 
 bool canShowPlayer(Player player){
@@ -20,7 +20,7 @@ class SettingsPage extends ManagerPage{
   final _infrequent = new Checkbox(querySelector("#settings .showInfrequent"));
 
   SettingsPage(){
-    element.querySelector(".returnFromSettings")
+    element.querySelector(".return")
       .onClick.listen((_)=> PageManager.goto(AllGamesReport));
 
     var storage = window.localStorage;

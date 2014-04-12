@@ -4,8 +4,9 @@ import 'dart:math' as math;
 import 'package:pingpong/common.dart';
 
 part 'all_games.dart';
-part 'settings.dart';
 part 'player_report.dart';
+part 'renderer.dart';
+part 'settings.dart';
 
 void main(){
   common_main();
@@ -18,7 +19,7 @@ void main(){
     if(player == null){
       PageManager.goto(AllGamesReport);
     } else {
-      PageManager.goto(PlayerReport, {'player': player});
+      PageManager.goto(PlayerReport, player);
     }
   });
 

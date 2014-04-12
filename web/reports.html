@@ -48,18 +48,119 @@
       <div class="showInactive checkbox">Show Inactive Players</div>
       <div class="showGuest checkbox">Show Guest Players</div>
       <div class="showInfrequent checkbox">Show Infrequent Players</div>
-      <button class="returnFromSettings">Return to Reports</button>
+      <button class="return">Return to Reports</button>
     </td></tr></table>
   </section>
 
   <section id="playerReport" class="page">
-    <div>Player Name</div>
-    Game Stats: win/lose/ratio<br/>
-    score stats: total, against players<br/>
-    double stats: most played with<br/>
-    longest point streak<br/>
-    longest bad serve streak<br/>
-    game ending bad serves<br/>
+    <button class="return">Return To Player List</button>
+    <div class="name"></div>
+
+    <h1>All Games</h1>
+    <table class="allGames games">
+      <tr>
+        <th>Total</th>
+        <th>Wins</th>
+        <th>Losses</th>
+        <th>Ratio</th>
+      </tr>
+      <tr>
+        <td class="total"></td>
+        <td class="wins"></td>
+        <td class="losses"></td>
+        <td class="ratio"></td>
+      </tr>
+    </table>
+
+    <h1>Doubles</h1>
+    <table class="doubles games">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Total</th>
+          <th>Wins</th>
+          <th>Losses</th>
+          <th>Ratio</th>
+        </tr>
+        <tr class="total">
+          <th>All</th>
+          <td class="total"></td>
+          <td class="wins"></td>
+          <td class="losses"></td>
+          <td class="ratio"></td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <h1>Singles</h1>
+    <table class="singles games">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Total</th>
+          <th>Wins</th>
+          <th>Losses</th>
+          <th>Ratio</th>
+        </tr>
+        <tr class="total">
+          <th>All</th>
+          <td class="total"></td>
+          <td class="wins"></td>
+          <td class="losses"></td>
+          <td class="ratio"></td>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h1>Points</h1>
+    <table class="points">
+      <tr>
+        <th></th>
+        <th>Total</th>
+        <th>Average per Game</th>
+      </tr>
+      <tr class="doubles">
+        <th>Doubles</th>
+        <td class="total"></td>
+        <td class="perGame"></td>
+      </tr>
+      <tr class="singles">
+        <th>Singles</th>
+        <td class="total"></td>
+        <td class="perGame"></td>
+      </tr>
+    </table>
+
+    <h1>Serves</h1>
+    <table class="serves">
+      <tr>
+        <th>Good</th>
+        <th>Bad</th>
+        <th>Total</th>
+        <th>Ratio</th>
+      </tr>
+      <tr>
+        <td class="good"></td>
+        <td class="bad"></td>
+        <td class="total"></td>
+        <td class="ratio"></td>
+      </tr>
+    </table>
+
+    <h1>Miscellaneous</h1>
+    <table class="misc">
+      <tr>
+        <th>Longest point streak</th>
+        <td class="longestStreak"></td>
+      </tr>
+      <tr>
+        <th>Game Ending, Bad Serves</th>
+        <td class="fatalServes"></td>
+      </tr>
+    </table>
   </section>
 
   <script type="application/dart" src="reports.dart"></script>
