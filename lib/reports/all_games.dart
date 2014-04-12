@@ -10,7 +10,7 @@ class AllGamesReport extends ManagerPage{
     _bestGameStats.hidden = true;
 
     var players = PlayerManager.models.where(canShowPlayer);
-    _renderPlayerRows(players);
+    _buildPlayerRows(players);
     _loadPlayerSummaries(players);
 
     postJSON("/report/bestGames", {}).then(_processBestGames);
@@ -34,10 +34,10 @@ class AllGamesReport extends ManagerPage{
     if(data.isEmpty) return;
 
     var rndr = new ReportRenderer(_bestGameStats);
-    rndr..game('highestScoringGame', data['highestScore'])
-        ..game('lowestScoringGame', data['lowestScore'])
-        ..teamStreak('longestTeamStreak', data['longestTeamStreak'])
-        ..playerStreak('longestPlayerStreak', data['longestPlayerStreak']);
+    rndr..game('.highestScoringGame', data['highestScore'])
+        ..game('.lowestScoringGame', data['lowestScore'])
+        ..teamStreak('.longestTeamStreak', data['longestTeamStreak'])
+        ..playerStreak('.longestPlayerStreak', data['longestPlayerStreak']);
     _bestGameStats.hidden = false;
   }
 
@@ -51,7 +51,7 @@ class AllGamesReport extends ManagerPage{
     });
   }
 
-  _renderPlayerRows(Iterable<Player> players){
+  _buildPlayerRows(Iterable<Player> players){
     _playerContainer.children.clear();
     _playerRows.clear();
 
