@@ -16,23 +16,20 @@ class AllGamesReport extends ManagerPage{
     postJSON("/report/bestGames", {}).then(_processBestGames);
   }
 
-  void _processGameCounts(Element row, Map d){
-    num win = d['win'];
-    num games = win + d['lose'];
+  void _processPlayerTotals(Element row, Map d){
+    num win = d['doublesWins'] + d['singlesWins'];
+    num games = win + d['doublesLosses'] + d['singlesLosses'];
+    num points = d['doublesPoints'] + d['singlesPoints'];
+    num good = d['goodServes'];
+    num serves = good + d['badServes'];
 
     _setNumText(row, '.games', games);
     _setPercentText(row, '.winRatio', win / games);
-  }
 
-  void _processPointTotals(Element row, Map d){
-    _setNumText(row, '.scoreTotal', d['total']);
-  }
+    _setNumText(row, '.scoreTotal', points);
 
-  void _processServeCounts(Element row, Map d){
-    num good = d['good'];
-    num total = good + d['bad'];
-    _setNumText(row, '.serveTotal', total);
-    _setPercentText(row, '.serveRatio', good / total);
+    _setNumText(row, '.serveTotal', serves);
+    _setPercentText(row, '.serveRatio', good / serves);
   }
 
   void _processBestGames(Map data){
@@ -45,22 +42,13 @@ class AllGamesReport extends ManagerPage{
   }
 
   _loadPlayerSummaries(Iterable<Player> players){
-    var reports = {
-      '/report/gameCounts' : _processGameCounts,
-      '/report/pointTotals': _processPointTotals,
-      '/report/serveCounts': _processServeCounts,
-    };
-
     var limit = {'players': players.map((p) => p.id).toList()};
-    var allRequests = [];
-    reports.forEach((path, dataHandler){
-      allRequests.add(postJSON(path, limit).then((data){
-        for(var d in data){
-          dataHandler(_playerRows[d['_id']], d);
-        }
-      }));
+    postJSON('/report/playerTotals', limit).then((data){
+      for(var d in data){
+        _processPlayerTotals(_playerRows[d['_id']], d);
+      }
+      _alignValues();
     });
-    Future.wait(allRequests).then(_alignValues);
   }
 
   _renderPlayerRows(Iterable<Player> players){
@@ -123,8 +111,8 @@ class AllGamesReport extends ManagerPage{
     """;
   }
 
-  _setNumText(Element e, String css, num n){
-    e.querySelector(css).text = n.toStringAsFixed(0);
+  _setNumText(Element e, String css, num n, {int decimal: 0}){
+    e.querySelector(css).text = n.toStringAsFixed(decimal);
   }
 
   _setPercentText(Element e, String css, num n){
@@ -132,7 +120,7 @@ class AllGamesReport extends ManagerPage{
   }
 
   ///Right align the numbers, but center the value in the cell.
-  void _alignValues(_){
+  void _alignValues(){
     var columns = ['td.games', 'td.scoreTotal', 'td.serveTotal'];
     for(var col in columns){
       var cells = _playerContainer.querySelectorAll(col);

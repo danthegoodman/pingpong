@@ -1,38 +1,40 @@
 part of pingpong.reports;
 
-bool _showInactive = false;
-bool _showGuests = false;
+final _settings = {
+    'showInactive': false,
+    'showGuests': false,
+    'showInfrequent': false,
+};
 
 bool canShowPlayer(Player player){
-  if(!player.active) return _showInactive;
-  if(player.guest) return _showGuests;
+  if(!player.frequent && !_settings['showInfrequent']) return false;
+  if(player.guest && !_settings['showGuests']) return false;
+  if(!player.active && !_settings['showInactive']) return false;
   return true;
 }
 
 class SettingsPage extends ManagerPage{
   final Element element = querySelector("#settings");
-  final _guests = new Checkbox(querySelector("#settings .showGuestPlayers"));
-  final _inactive = new Checkbox(querySelector("#settings .showInactivePlayers"));
+  final _guests = new Checkbox(querySelector("#settings .showGuest"));
+  final _inactive = new Checkbox(querySelector("#settings .showInactive"));
+  final _infrequent = new Checkbox(querySelector("#settings .showInfrequent"));
 
   SettingsPage(){
     element.querySelector(".returnFromSettings")
       .onClick.listen((_)=> PageManager.goto(AllGamesReport));
 
     var storage = window.localStorage;
-    _showGuests = storage['showGuests'] == 'true';
-    _showInactive = storage['showInactive'] == 'true';
+    _handleSetting('showGuests', _guests);
+    _handleSetting('showInactive', _inactive);
+    _handleSetting('showInfrequent', _infrequent);
+  }
 
-    _guests.value = _showGuests;
-    _inactive.value = _showInactive;
-
-    _guests.onChange.listen((b){
-      _showGuests = b;
-      storage['showGuests'] = b.toString();
-    });
-
-    _inactive.onChange.listen((b){
-      _showInactive = b;
-      storage['showInactive'] = b.toString();
+  void _handleSetting(String key, Checkbox checkbox){
+    _settings[key] = window.localStorage[key] == 'true';
+    checkbox.value = _settings[key];
+    checkbox.onChange.listen((b){
+      _settings[key] = b;
+      window.localStorage[key] = b.toString();
     });
   }
 }
