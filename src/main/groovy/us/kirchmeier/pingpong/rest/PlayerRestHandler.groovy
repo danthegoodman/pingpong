@@ -4,9 +4,7 @@ import us.kirchmeier.pingpong.mongo.GMongoCollection
 
 import static us.kirchmeier.pingpong.mongo.GMongo.getMongo
 
-class PlayerRestRouter extends ModelRestRouter {
-
-    String path = 'player'
+class PlayerRestHandler extends ModelRestHandler {
 
     GMongoCollection getCollection(){
         mongo.players

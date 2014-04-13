@@ -1,7 +1,6 @@
 package us.kirchmeier.pingpong.report
 
-import spark.Request
-import spark.Response
+import ratpack.handling.Context
 import us.kirchmeier.pingpong.model.GameModel
 import us.kirchmeier.pingpong.model.PlayerModel
 
@@ -27,8 +26,8 @@ class BestGamesReport extends ReportBase {
     }
 
     @Override
-    Object handle(Request request, Response response, Map json) {
-        return collection.findOne()?.toMap() ?: [:]
+    void handle(Context context) {
+        context.render collection.findOne()?.toMap() ?: [:]
     }
 
     private boolean updateHighestScore(Map record, GameModel game){

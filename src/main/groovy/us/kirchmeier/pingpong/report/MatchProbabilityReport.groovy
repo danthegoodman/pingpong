@@ -1,7 +1,6 @@
 package us.kirchmeier.pingpong.report
 
-import spark.Request
-import spark.Response
+import ratpack.handling.Context
 import us.kirchmeier.pingpong.model.GameModel
 import us.kirchmeier.pingpong.model.PlayerModel
 
@@ -32,9 +31,13 @@ class MatchProbabilityReport extends ReportBase {
     }
 
     @Override
-    Object handle(Request request, Response response, Map json) {
+    void handle(Context context) {
+        def json = context.parse(Map)
         def players = parsePlayers(json.players)
-        if (!players) return 'Error - Two or four player ids are required in "players"';
+        if (!players){
+            context.render 'Error - Two or four player ids are required in "players"'
+            return
+        }
 
         Map<Collection, Map> results = possibleTeamCombinations(players).collectEntries {
             [it, [players: it, team0: 0, team1: 0, score0: 0, score1: 0]]
@@ -45,7 +48,7 @@ class MatchProbabilityReport extends ReportBase {
             it.players = p;
             results[p] = it
         }
-        return results.values()
+        context.render results.values()
     }
 
     List<Integer> parsePlayers(def l) {

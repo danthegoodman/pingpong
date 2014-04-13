@@ -3,7 +3,7 @@ package us.kirchmeier.pingpong
 import com.mongodb.BasicDBObject
 import com.mongodb.DB
 import org.bson.types.ObjectId
-import us.kirchmeier.pingpong.api.CompleteGameRoute
+import us.kirchmeier.pingpong.api.CompleteGameHandler
 import us.kirchmeier.pingpong.report.ReportBase
 
 import static us.kirchmeier.pingpong.mongo.GMongo.getMongo
@@ -43,7 +43,7 @@ class DataMigrator {
 
     private void copyGames(){
         int gameIndex = 0;
-        def gameCompleter = new CompleteGameRoute()
+        def gameCompleter = new CompleteGameHandler()
         def warnings = []
 
         oldDb.getCollection('games').find().skip(gameIndex).toArray().each { oldGame ->

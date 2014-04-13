@@ -1,5 +1,6 @@
 package us.kirchmeier.pingpong.report
 
+import ratpack.handling.Context
 import spark.Request
 import spark.Response
 import us.kirchmeier.pingpong.model.GameModel
@@ -44,12 +45,13 @@ class PlayerTotalsReport extends ReportBase {
     }
 
     @Override
-    Object handle(Request request, Response response, Map json) {
+    void handle(Context context) {
+        def json = context.parse(Map);
         def query = [:]
         if (json.players) {
             query._id = [$in: json.players]
         }
         def cursor = collection.find(query)
-        return cursor*.toMap()
+        context.render cursor*.toMap()
     }
 }

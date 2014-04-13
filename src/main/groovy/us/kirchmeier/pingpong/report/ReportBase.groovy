@@ -2,16 +2,15 @@ package us.kirchmeier.pingpong.report
 
 import groovy.transform.Memoized
 import org.reflections.Reflections
-import spark.Request
-import spark.Response
+import ratpack.handling.Context
+import ratpack.handling.Handler
 import us.kirchmeier.pingpong.model.GameModel
 import us.kirchmeier.pingpong.model.PlayerModel
 import us.kirchmeier.pingpong.mongo.GMongo
 import us.kirchmeier.pingpong.mongo.GMongoCollection
-import us.kirchmeier.pingpong.util.GRoute
 
 
-abstract class ReportBase implements GRoute{
+abstract class ReportBase implements Handler{
     GMongoCollection getCollection() {
         return GMongo.mongo.getCollection(collectionName)
     }
@@ -20,7 +19,7 @@ abstract class ReportBase implements GRoute{
     abstract String getPath()
 
     abstract void update(GameModel game, Map<Integer, PlayerModel> allPlayers)
-    abstract Object handle(Request request, Response response, Map jsonBody)
+    abstract void handle(Context context)
 
     @Memoized(protectedCacheSize = 1)
     static Collection<ReportBase> getAllReports() {

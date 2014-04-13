@@ -1,44 +1,47 @@
 package us.kirchmeier.pingpong.rest
 
 import org.bson.types.ObjectId
-import spark.Request
+import ratpack.groovy.handling.GroovyChainAction
+import ratpack.handling.Context
 import us.kirchmeier.pingpong.mongo.GMongoCollection
-import us.kirchmeier.pingpong.util.Sparky
 
-abstract class ModelRestRouter {
-    void install() {
-        Sparky.get "/rest/$path/:id", { req, res, json ->
-            def m = findById(parseId(req))
+abstract class ModelRestHandler extends GroovyChainAction {
+    @Override
+    void execute() throws Exception {
+        chain.get ":id", {
+            def m = findById(parseId(context))
             if (m == null) {
-                res.status(404)
+                context.response.status(404)
                 return [:]
             }
             return m
         }
 
-        Sparky.get "/rest/$path", { req, res, json ->
+        chain.get {
             return list()
         }
 
-        Sparky.post "/rest/$path", { req, res, json ->
+        chain.post {
+            def json = parse(Map)
             json.remove('_id')
             return create(json)
         }
 
-        Sparky.put "/rest/$path/:id", { req, res, json ->
-            json['_id'] = parseId(req);
+        chain.put ":id", {
+            def json = parse(Map)
+            json['_id'] = parseId(context);
             save(json)
             return json
         }
 
-        Sparky.delete "/rest/$path/:id", { req, res, json ->
-            deleteById(parseId(req))
+        chain.delete ":id", {
+            deleteById(parseId(context))
             return '{}'
         }
     }
 
-    Serializable parseId(Request req) {
-        def strId = req.params(':id');
+    Serializable parseId(Context context) {
+        def strId = context.pathTokens['id']
         try {
             return strId.toInteger();
         } catch (NumberFormatException ignored) {
@@ -46,7 +49,6 @@ abstract class ModelRestRouter {
         return new ObjectId(strId);
     }
 
-    abstract String getPath()
     abstract GMongoCollection getCollection()
 
     Map findById(def id) {

@@ -8,6 +8,7 @@ repositories {
 dependencies {
     compile 'org.codehaus.groovy:groovy:2.2.2'
     compile 'org.codehaus.groovy:groovy-json:2.2.2'
+    compile 'io.ratpack:ratpack-groovy:0.9.3'
     compile 'org.mongodb:mongo-java-driver:2.11.4'
     compile 'com.sparkjava:spark-core:1.1.1'
     compile 'org.reflections:reflections:0.9.9-RC1'

@@ -1,18 +1,19 @@
 package us.kirchmeier.pingpong.api
 
-import spark.Request
-import spark.Response
+import ratpack.handling.Context
+import ratpack.handling.Handler
 import us.kirchmeier.pingpong.model.GameModel
 import us.kirchmeier.pingpong.model.PlayerModel
 import us.kirchmeier.pingpong.report.ReportBase
-import us.kirchmeier.pingpong.util.GRoute
 
 import static us.kirchmeier.pingpong.mongo.GMongo.getMongo
 
-class CompleteGameRoute implements GRoute {
+class CompleteGameHandler implements Handler {
     @Override
-    Object handle(Request request, Response response, Map json) {
-        def game = new GameModel(json)
+    void handle(Context context) {
+        def json = context.parse(Map);
+        def game = new GameModel(json);
+
         mongo.games.insert(json)
         def allPlayers = mongo.players.find().toArray().collectEntries{ [it.get('_id'), new PlayerModel(it.toMap())] }
 
@@ -21,6 +22,6 @@ class CompleteGameRoute implements GRoute {
         }
 
         mongo.activeGames.remove(_id: json._id)
-        return '{}'
+        context.render '{}'
     }
 }
