@@ -6,7 +6,7 @@ class PlayerReport extends ManagerPage{
 
   void onShow(Player player){
     txt = new ReportRenderer(element);
-    window.location.hash = player.id.toString(); //TODO remove
+    window.location.hash = player.id.toString(); //DRK remove
     element.querySelector(".name").text = player.name;
     element.querySelector(".return").onClick.listen((_){
       PageManager.goto(AllGamesReport);
@@ -61,5 +61,9 @@ class PlayerReport extends ManagerPage{
       ..number('.bad', srvBad)
       ..number('.total', srvGood + srvBad)
       ..percent('.ratio', srvGood / (srvGood + srvBad));
+
+    txt.subrenderer('.misc')
+      ..number('.longestStreak', data['longestStreak'])
+      ..number('.fatalServes', data['fatalServes']);
   }
 }

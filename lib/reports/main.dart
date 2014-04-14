@@ -15,7 +15,7 @@ void main(){
   PageManager.add(new SettingsPage());
 
   PlayerManager.loadAll().then((_){
-    Player player = _readPlayerFromHash(); //TODO stop this. Its too much once development is done.
+    Player player = _readPlayerFromHash(); //DRK stop this. Its too much once development is done.
     if(player == null){
       PageManager.goto(AllGamesReport);
     } else {

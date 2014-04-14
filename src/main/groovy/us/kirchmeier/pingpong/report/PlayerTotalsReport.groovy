@@ -24,7 +24,8 @@ class PlayerTotalsReport extends ReportBase {
             def won = team0Won == ((index % 2) == 0)
             def strNdx = String.valueOf(index)
             def points = game.points.count{ it[2] == strNdx }
-            def update = [
+            def fatalServe = game.points.last().startsWith("${index}0")
+            def increments = [
                     doublesPoints : isDoubles ? points : 0,
                     singlesPoints : isDoubles ? 0 : points,
                     goodServes: playerServes[id].g,
@@ -33,13 +34,31 @@ class PlayerTotalsReport extends ReportBase {
                     doublesLosses: isDoubles & !won ? 1 : 0,
                     singlesWins: !isDoubles && won ? 1 : 0,
                     singlesLosses: !isDoubles && !won ? 1 : 0,
+                    fatalServes: fatalServe ? 1 : 0
+            ]
+            def maxes = [
+                    longestStreak: findLongestPlayerStreak(game.points, strNdx)
             ]
             collection.update(
                     [_id: id],
-                    [$inc: update],
+                    [$inc: increments, $max: maxes],
                     [upsert: true]
             )
         }
+    }
+
+    int findLongestPlayerStreak(List<String> points, String index){
+        int maxLen = 0;
+        int curLen = 0;
+        points.each{
+            if(it[2] == index){
+                curLen++
+            } else {
+                curLen = 0
+            }
+            maxLen = Math.max(curLen, maxLen);
+        }
+        return maxLen;
     }
 
     @Override

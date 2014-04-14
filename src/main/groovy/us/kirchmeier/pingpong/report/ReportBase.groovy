@@ -34,7 +34,7 @@ abstract class ReportBase implements Handler{
     /**
      * Handles the report request in a background thread as to not block.
      *
-     * Return the result to render, do not use [:context'} to render.
+     * Return the result to render, do not use [:context:] to render.
      */
     abstract Object handleBackground(Context context)
 

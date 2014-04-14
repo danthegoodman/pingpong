@@ -19,7 +19,10 @@ task 'run'(type: JavaExec, dependsOn: 'classes') {
     classpath = sourceSets.main.runtimeClasspath
 }
 
-task 'migrate'(type: JavaExec, dependsOn: 'classes') {
+task 'fake-data'() { //DRK implement
+}
+
+task 'migrate'(type: JavaExec, dependsOn: 'classes') { //DRK delete once migrated...
     main = 'us.kirchmeier.pingpong.DataMigrator'
     classpath = sourceSets.main.runtimeClasspath
 }
