@@ -31,12 +31,11 @@ class MatchProbabilityReport extends ReportBase {
     }
 
     @Override
-    void handle(Context context) {
+    Object handleBackground(Context context) {
         def json = context.parse(Map)
         def players = parsePlayers(json.players)
         if (!players){
-            context.render 'Error - Two or four player ids are required in "players"'
-            return
+            return 'Error - Two or four player ids are required in "players"'
         }
 
         Map<Collection, Map> results = possibleTeamCombinations(players).collectEntries {
@@ -48,7 +47,7 @@ class MatchProbabilityReport extends ReportBase {
             it.players = p;
             results[p] = it
         }
-        context.render results.values()
+        return results.values()
     }
 
     List<Integer> parsePlayers(def l) {

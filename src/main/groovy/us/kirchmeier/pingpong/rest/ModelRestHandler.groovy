@@ -5,38 +5,45 @@ import ratpack.groovy.handling.GroovyChainAction
 import ratpack.handling.Context
 import us.kirchmeier.pingpong.mongo.GMongoCollection
 
+import java.util.concurrent.Callable
+
 abstract class ModelRestHandler extends GroovyChainAction {
     @Override
     void execute() throws Exception {
         chain.get ":id", {
-            def m = findById(parseId(context))
-            if (m == null) {
-                context.response.status(404)
-                return [:]
+            bg(context) {
+                findById(parseId(context)) ?: "not found"
             }
-            return m
         }
 
         chain.get {
-            return list()
+            bg(context) {
+                list()
+            }
         }
 
         chain.post {
             def json = parse(Map)
             json.remove('_id')
-            return create(json)
+            bg(context){
+                create(json)
+            }
         }
 
         chain.put ":id", {
             def json = parse(Map)
             json['_id'] = parseId(context);
-            save(json)
-            return json
+            bg(context){
+                save(json)
+                return json
+            }
         }
 
         chain.delete ":id", {
-            deleteById(parseId(context))
-            return '{}'
+            bg(context){
+                deleteById(parseId(context))
+                return '{}'
+            }
         }
     }
 
@@ -70,5 +77,13 @@ abstract class ModelRestHandler extends GroovyChainAction {
 
     void deleteById(def id) {
         collection.remove(_id: id)
+    }
+
+    void bg(Context context, Callable closure){
+        context.background(closure).onError {
+            context.render it
+        }.then {
+            context.render it
+        }
     }
 }

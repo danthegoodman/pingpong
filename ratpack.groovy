@@ -3,6 +3,7 @@ import us.kirchmeier.pingpong.api.RestartHandler
 import us.kirchmeier.pingpong.report.ReportBase
 import us.kirchmeier.pingpong.rest.ActiveGameRestHandler
 import us.kirchmeier.pingpong.rest.PlayerRestHandler
+import us.kirchmeier.pingpong.util.ExceptionRenderer
 import us.kirchmeier.pingpong.util.JsonListRenderer
 import us.kirchmeier.pingpong.util.JsonMapRenderer
 import us.kirchmeier.pingpong.util.JsonParser
@@ -16,19 +17,20 @@ ratpack {
         bind(JsonParser, new JsonParser())
         bind(JsonMapRenderer, new JsonMapRenderer())
         bind(JsonListRenderer, new JsonListRenderer())
+        bind(ExceptionRenderer, new ExceptionRenderer())
     }
 
     handlers {
         get { render file('web/reports.html') }
-        get '/api/restart', new RestartHandler()
-        post '/api/completeGame', new CompleteGameHandler()
+        get 'api/restart', new RestartHandler()
+        post 'api/completeGame', new CompleteGameHandler()
 
         ReportBase.allReports.each {
-            post "/report/$it.path", it
+            post "report/$it.path", it
         }
 
-        prefix('/rest/player', new PlayerRestHandler())
-        prefix('/rest/active_game', new ActiveGameRestHandler())
+        prefix('rest/player', new PlayerRestHandler())
+        prefix('rest/active_game', new ActiveGameRestHandler())
 
         assets('web')
         assets('public')

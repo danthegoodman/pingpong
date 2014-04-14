@@ -26,8 +26,8 @@ class BestGamesReport extends ReportBase {
     }
 
     @Override
-    void handle(Context context) {
-        context.render collection.findOne()?.toMap() ?: [:]
+    Object handleBackground(Context context) {
+        return collection.findOne()?.toMap() ?: [:]
     }
 
     private boolean updateHighestScore(Map record, GameModel game){
