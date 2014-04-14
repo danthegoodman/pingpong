@@ -17,7 +17,7 @@ class PlayerPage extends ManagerPage{
     _frequent.onChange.listen(_onFrequentChange);
     querySelector("#playerPage .addNew").onClick.listen(_onAddNewPlayerClick);
 
-    PlayerManager.onLoadAll.first.then(_redrawPlayers);
+    PlayerManager.onLoadAll.first.then((_)=> _redrawPlayers(""));
   }
 
   Player get _currentPlayer => PlayerManager.get(int.parse(_players.value));
@@ -51,16 +51,18 @@ class PlayerPage extends ManagerPage{
   }
 
   _onAddNewPlayerClick(_){
-    PlayerManager.create(new Player.brandNew()).then(_redrawPlayers);
+    PlayerManager.create(new Player.brandNew()).then((newPlayer){
+      _redrawPlayers(newPlayer.id.toString());
+      _onSelectionChange(null);
+    });
   }
 
   _save(){
     PlayerManager.save(_currentPlayer);
-    _redrawPlayers(null);
+    _redrawPlayers(_players.value);
   }
 
-  _redrawPlayers(_){
-    var currentVal = _players.value;
+  _redrawPlayers(String idToSelect){
     var normal = [];
     var inactive = [];
     var guest = [];
@@ -70,7 +72,7 @@ class PlayerPage extends ManagerPage{
               p.active ? normal :
                          inactive;
       var id = p.id.toString();
-      l.add(new OptionElement(data: p.name, value: id, selected: id == currentVal));
+      l.add(new OptionElement(data: p.name, value: id, selected: id == idToSelect));
     }
 
     _players.children
@@ -79,7 +81,7 @@ class PlayerPage extends ManagerPage{
         ..add(new OptGroupElement()..label = "Inactive"..children = inactive)
         ..add(new OptGroupElement()..label = "Guests"..children = guest);
 
-    if(currentVal == ""){
+    if(idToSelect == ""){
       _players.value = normal.first.value;
       _onSelectionChange(null);
     }

@@ -5,55 +5,70 @@ import ratpack.groovy.handling.GroovyChainAction
 import ratpack.handling.Context
 import us.kirchmeier.pingpong.mongo.GMongoCollection
 
-import java.util.concurrent.Callable
-
 abstract class ModelRestHandler extends GroovyChainAction {
     @Override
     void execute() throws Exception {
-        chain.get ":id", {
-            bg(context) {
-                findById(parseId(context)) ?: "not found"
+        handler(":id") {
+            byMethod{
+                get { bg context, handleGet }
+                put { bg context, handleSave }
+                delete { bg context, handleDelete }
             }
         }
-
-        chain.get {
-            bg(context) {
-                list()
-            }
-        }
-
-        chain.post {
-            def json = parse(Map)
-            json.remove('_id')
-            bg(context){
-                create(json)
-            }
-        }
-
-        chain.put ":id", {
-            def json = parse(Map)
-            json['_id'] = parseId(context);
-            bg(context){
-                save(json)
-                return json
-            }
-        }
-
-        chain.delete ":id", {
-            bg(context){
-                deleteById(parseId(context))
-                return '{}'
+        handler {
+            byMethod {
+                get { bg context, handleList }
+                post { bg context, handleCreate }
             }
         }
     }
 
+    /**
+     * Run A handler in the background,
+     * @param context
+     * @param handler
+     */
+    void bg(Context context, Closure handler) {
+        context.background(handler.curry(context)).onError {
+            context.render it
+        }.then {
+            context.render it
+        }
+    }
+
+    def handleGet = { Context context ->
+        return findById(parseId(context)) ?: "not found"
+    }
+
+    def handleList = { Context context ->
+        return list()
+    }
+
+    def handleCreate = { Context context ->
+        def json = context.parse(Map)
+        json.remove('_id')
+        return create(json)
+    }
+
+    def handleSave = { Context context ->
+        def json = context.parse(Map)
+        json['_id'] = parseId(context)
+        save(json)
+        return json
+    }
+
+    def handleDelete = { Context context ->
+        deleteById(parseId(context))
+        return '{}'
+    }
+
     Serializable parseId(Context context) {
-        def strId = context.pathTokens['id']
+        def strId = context.allPathTokens['id']
         try {
-            return strId.toInteger();
+            return strId.toInteger()
         } catch (NumberFormatException ignored) {
         }
-        return new ObjectId(strId);
+        return new ObjectId(strId)
     }
 
     abstract GMongoCollection getCollection()
@@ -67,8 +82,8 @@ abstract class ModelRestHandler extends GroovyChainAction {
     }
 
     Map create(Map model) {
-        collection.insert(model);
-        return model;
+        collection.insert(model)
+        return model
     }
 
     void save(Map model) {
@@ -77,13 +92,5 @@ abstract class ModelRestHandler extends GroovyChainAction {
 
     void deleteById(def id) {
         collection.remove(_id: id)
-    }
-
-    void bg(Context context, Callable closure){
-        context.background(closure).onError {
-            context.render it
-        }.then {
-            context.render it
-        }
     }
 }
