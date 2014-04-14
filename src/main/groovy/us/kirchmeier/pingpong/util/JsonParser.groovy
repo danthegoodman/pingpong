@@ -6,7 +6,7 @@ import ratpack.http.MediaType
 import ratpack.http.TypedData
 import ratpack.parse.NoOptParserSupport
 
-
+@javax.inject.Singleton
 class JsonParser extends NoOptParserSupport{
     public JsonParser() {
         super(MediaType.APPLICATION_JSON)

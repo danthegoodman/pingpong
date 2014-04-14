@@ -7,23 +7,28 @@ import us.kirchmeier.pingpong.util.ExceptionRenderer
 import us.kirchmeier.pingpong.util.JsonListRenderer
 import us.kirchmeier.pingpong.util.JsonMapRenderer
 import us.kirchmeier.pingpong.util.JsonParser
+import us.kirchmeier.pingpong.ws.RecalculateReportsHandler
 
 import static ratpack.groovy.Groovy.ratpack
+import static ratpack.websocket.WebSockets.*
 
 System.setProperty('ratpack.port', System.getenv('PINGPONG_PORT') ?: '8000');
 
 ratpack {
     modules {
-        bind(JsonParser, new JsonParser())
-        bind(JsonMapRenderer, new JsonMapRenderer())
-        bind(JsonListRenderer, new JsonListRenderer())
-        bind(ExceptionRenderer, new ExceptionRenderer())
+        bind(JsonParser)
+        bind(JsonMapRenderer)
+        bind(JsonListRenderer)
+        bind(ExceptionRenderer)
     }
 
     handlers {
         get { render file('web/reports.html') }
+
         get 'api/restart', new RestartHandler()
         post 'api/completeGame', new CompleteGameHandler()
+
+        get("ws/recalculate") { websocket(context, new RecalculateReportsHandler(background: background)) }
 
         ReportBase.allReports.each {
             post "report/$it.path", it

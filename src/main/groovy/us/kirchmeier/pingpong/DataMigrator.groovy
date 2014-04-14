@@ -63,7 +63,7 @@ class DataMigrator {
                 return;
             }
 
-            gameCompleter.handle(null, null, [
+            gameCompleter.completeGame([
                     _id        : og._id,
                     gameInMatch: gameInMatch,
                     parentId   : og.parent,

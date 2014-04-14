@@ -5,12 +5,19 @@ repositories {
     mavenCentral()
 }
 
+//configurations.all {
+//    exclude(module: 'groovy-all')
+//}
+//    resolutionStrategy {
+//        // fail eagerly on version conflict (includes transitive dependencies)
+//        // e.g. multiple different versions of the same dependency (group and name are equal)
+//        failOnVersionConflict()
+//    }
+//}
+
 dependencies {
-    compile 'org.codehaus.groovy:groovy:2.2.2'
-    compile 'org.codehaus.groovy:groovy-json:2.2.2'
     compile 'io.ratpack:ratpack-groovy:0.9.3'
     compile 'org.mongodb:mongo-java-driver:2.11.4'
-    compile 'com.sparkjava:spark-core:1.1.1'
     compile 'org.reflections:reflections:0.9.9-RC1'
     compile 'commons-cli:commons-cli:1.2'
 

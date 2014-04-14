@@ -53,7 +53,8 @@ abstract class ReportBase implements Handler{
     @Memoized(protectedCacheSize = 1)
     static Collection<ReportBase> getAllReports() {
         Reflections reflections = new Reflections("us.kirchmeier.pingpong");
-        return reflections.getSubTypesOf(ReportBase.class)*.newInstance()
+        def reports = reflections.getSubTypesOf(ReportBase.class)*.newInstance()
+        return reports.sort { it.class.simpleName }
     }
 
 }

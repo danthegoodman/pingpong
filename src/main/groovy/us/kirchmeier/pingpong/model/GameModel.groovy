@@ -2,7 +2,6 @@ package us.kirchmeier.pingpong.model
 
 import org.bson.types.ObjectId
 
-
 class GameModel {
     ObjectId _id
     ObjectId parentId
