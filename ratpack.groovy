@@ -1,6 +1,10 @@
 import us.kirchmeier.pingpong.api.CompleteGameHandler
 import us.kirchmeier.pingpong.api.RestartHandler
+import us.kirchmeier.pingpong.report.BestGamesReport
+import us.kirchmeier.pingpong.report.MatchProbabilityReport
+import us.kirchmeier.pingpong.report.PlayerTotalsReport
 import us.kirchmeier.pingpong.report.ReportBase
+
 import us.kirchmeier.pingpong.rest.ActiveGameRestHandler
 import us.kirchmeier.pingpong.rest.PlayerRestHandler
 import us.kirchmeier.pingpong.util.ExceptionRenderer
@@ -20,6 +24,10 @@ ratpack {
         bind(JsonMapRenderer)
         bind(JsonListRenderer)
         bind(ExceptionRenderer)
+
+        bind(BestGamesReport)
+        bind(MatchProbabilityReport)
+        bind(PlayerTotalsReport)
     }
 
     handlers {
@@ -28,12 +36,11 @@ ratpack {
         get 'api/restart', new RestartHandler()
         post 'api/completeGame', new CompleteGameHandler()
 
-        get("ws/recalculate") { websocket(context, new RecalculateReportsHandler(background: background)) }
+        get("ws/recalculate") { websocket(context, new RecalculateReportsHandler(context: context)) }
 
-        ReportBase.allReports.each {
+        registry.getAll(ReportBase).each{
             post "report/$it.path", it
         }
-
         prefix('rest/player', new PlayerRestHandler())
         prefix('rest/active_game', new ActiveGameRestHandler())
 

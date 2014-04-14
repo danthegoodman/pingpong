@@ -4,6 +4,9 @@ import com.mongodb.BasicDBObject
 import com.mongodb.DB
 import org.bson.types.ObjectId
 import us.kirchmeier.pingpong.api.CompleteGameHandler
+import us.kirchmeier.pingpong.report.BestGamesReport
+import us.kirchmeier.pingpong.report.MatchProbabilityReport
+import us.kirchmeier.pingpong.report.PlayerTotalsReport
 import us.kirchmeier.pingpong.report.ReportBase
 
 import static us.kirchmeier.pingpong.mongo.GMongo.getMongo
@@ -13,9 +16,9 @@ class DataMigrator {
 
     def playerMappings = [:]
     def gamesInMatches = [:]
+    def allReports = [new BestGamesReport(), new MatchProbabilityReport(), new PlayerTotalsReport()];
 
     void run(){
-        ReportBase.allReports
         oldDb = mongo.client.getDB('pingpong')
         newDb = mongo.client.getDB('pingpong2')
         newDb.dropDatabase()
@@ -71,7 +74,7 @@ class DataMigrator {
                     finish     : og.finish,
                     players    : players,
                     points     : points,
-            ])
+            ], allReports)
         }
 
         println "Copied ${gameIndex} Games"

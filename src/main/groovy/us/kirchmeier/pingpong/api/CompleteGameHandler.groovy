@@ -13,7 +13,7 @@ class CompleteGameHandler implements Handler {
     void handle(Context context) {
         def json = context.parse(Map);
         context.background {
-            completeGame(json)
+            completeGame(json, getAll(ReportBase))
         } onError {
             context.render it
         } then {
@@ -21,13 +21,13 @@ class CompleteGameHandler implements Handler {
         }
     }
 
-    void completeGame(Map json) {
+    void completeGame(Map json, List<ReportBase> reports) {
         def game = new GameModel(json)
 
         mongo.games.insert(json)
         def allPlayers = mongo.players.find().toArray().collectEntries { [it.get('_id'), new PlayerModel(it.toMap())] }
 
-        ReportBase.allReports.each {
+        reports.each {
             it.update(game, allPlayers)
         }
 

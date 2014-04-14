@@ -5,20 +5,9 @@ repositories {
     mavenCentral()
 }
 
-//configurations.all {
-//    exclude(module: 'groovy-all')
-//}
-//    resolutionStrategy {
-//        // fail eagerly on version conflict (includes transitive dependencies)
-//        // e.g. multiple different versions of the same dependency (group and name are equal)
-//        failOnVersionConflict()
-//    }
-//}
-
 dependencies {
     compile 'io.ratpack:ratpack-groovy:0.9.3'
     compile 'org.mongodb:mongo-java-driver:2.11.4'
-    compile 'org.reflections:reflections:0.9.9-RC1'
     compile 'commons-cli:commons-cli:1.2'
 
     runtime 'org.slf4j:slf4j-simple:1.7.6'
