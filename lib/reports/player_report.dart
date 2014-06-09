@@ -12,10 +12,14 @@ class PlayerReport extends ManagerPage{
       PageManager.goto(AllGamesReport);
     });
 
-    postJSON('/report/playerTotals', {'players': [player.id]}).then(_render);
+    postJSON('/report/playerTotals', {'players': [player.id]}).then(_renderTotals);
+
+    var opponents = PlayerManager.models.where(canShowPlayer).where((p)=> p != player);
+    _reportSinglesMatchups(player, opponents);
+//    _reportDoublesMatchups(player, opponents);
   }
 
-  void _render(Iterable<Map> allData){
+  void _renderTotals(Iterable<Map> allData){
     var data = allData.single;
 
     var dWin = data['doublesWins'];
@@ -65,5 +69,47 @@ class PlayerReport extends ManagerPage{
     txt.subrenderer('.misc')
       ..number('.longestStreak', data['longestStreak'])
       ..number('.fatalServes', data['fatalServes']);
+  }
+
+  void _reportSinglesMatchups(Player player, Iterable<Player> opponents){
+    var el = element.querySelector('.singles tbody');
+    el.children.clear();
+    for(var p in opponents){
+      postJSON('/report/matchProbability', {'players': [player.id, p.id]})
+          .then((allData) => _renderSinglesMatchup(el, player, p, allData.first));
+    }
+  }
+
+  void _reportDoublesMatchups(Player player, Iterable<Player> opponents){
+    var el = element.querySelector('.doubles tbody');
+    for(var p in opponents){
+      postJSON('/report/matchProbability', {'players': [player.id, p.id]})
+          .then((allData) => _renderSinglesMatchup(el, player, p, allData.first));
+    }
+  }
+
+  void _renderSinglesMatchup(TableSectionElement el, Player pl, Player op, Map data){
+    List players = data['players'];
+    var counts = [data['team0'], data['team1']];
+    int pNdx = players.indexOf(pl.id);
+
+    int wins = counts[pNdx];
+    int lose = counts[(pNdx-1).abs()];
+    int total = wins + lose;
+
+    if(total == 0) return;
+    var row = el.addRow()..innerHtml = """
+      <th>${op.name}</th>
+      <td class="total"></td>
+      <td class="wins"></td>
+      <td class="losses"></td>
+      <td class="ratio"></td>""";
+
+    el.append(row);
+    new ReportRenderer(row)
+      ..number('.wins', wins)
+      ..number('.losses', lose)
+      ..number('.total', wins + lose)
+      ..percent('.ratio', wins / (wins + lose));
   }
 }

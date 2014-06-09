@@ -21,7 +21,7 @@ Future requestJSON(String method, String url, [dynamic sendData]){
       requestHeaders: requestHeaders,
       sendData: sendData)
     ..then((xhr)=> c.complete(JSON.decode(xhr.responseText)))
-    ..catchError((e){
+    ..catchError((ProgressEvent e){
         print("Error Communicating With Server: ${e}");
         querySelector("#asyncError").hidden = true;
         c.completeError(e);

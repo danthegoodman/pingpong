@@ -9,6 +9,7 @@ class ReportRenderer {
   }
 
   void number(String sel, num n, {int decimal: 0}){
+    if(n == null || n.isNaN) return;
     _el.querySelector(sel).text = n.toStringAsFixed(decimal);
   }
 

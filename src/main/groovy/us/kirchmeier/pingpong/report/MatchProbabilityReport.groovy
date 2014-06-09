@@ -47,7 +47,7 @@ class MatchProbabilityReport extends ReportBase {
             it.players = p;
             results[p] = it
         }
-        return results.values()
+        return results.values().toList()
     }
 
     List<Integer> parsePlayers(def l) {

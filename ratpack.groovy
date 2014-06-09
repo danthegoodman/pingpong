@@ -38,9 +38,10 @@ ratpack {
 
         get("ws/recalculate") { websocket(context, new RecalculateReportsHandler(context: context)) }
 
-        registry.getAll(ReportBase).each{
-            post "report/$it.path", it
+        for(def rb : registry.getAll(ReportBase)){
+            post "report/$rb.path", rb
         }
+
         prefix('rest/player', new PlayerRestHandler())
         prefix('rest/active_game', new ActiveGameRestHandler())
 
