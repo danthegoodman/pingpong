@@ -1,7 +1,7 @@
 library com.kirchmeier.pingpong.button_mappings;
 
 import 'dart:html';
-import 'dart:json' as json;
+import 'dart:convert' show JSON;
 
 ButtonMappingsImpl ButtonMappings = new ButtonMappingsImpl();
 Map get _defaultConfiguration => {'Q': '01', 'P':'10', 'Z':'00', 'M':'11'};
@@ -55,7 +55,7 @@ class Button {
 Map _readFromStorage(){
   var s = window.localStorage['shortcuts'];
   if(s == null || s.isEmpty) throw new Exception("No exisiting configuration");
-  return json.parse(s);
+  return JSON.decode(s);
 }
 
 Map _processConfiguration(Map cfg){
@@ -78,5 +78,5 @@ void _saveToStorage(Map<String, Button> map){
   map.forEach((String k, Button b){
     result[k] = "${b.team}${b.position}";
   });
-  window.localStorage['shortcuts'] = json.stringify(result);
+  window.localStorage['shortcuts'] = JSON.encode(result);
 }

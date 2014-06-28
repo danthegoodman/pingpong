@@ -4,7 +4,7 @@ import 'sc_common.dart';
 import 'package:js/js.dart' as js;
 
 initSoundManager(){
-  js.context['soundManager'].onready(new js.Callback.once(_onSoundManagerReady));
+  js.context['soundManager'].onready(_onSoundManagerReady);
 }
 
 _onSoundManagerReady(q){
