@@ -23,21 +23,23 @@ button{
 }
 
 h1{ margin: 0.2em;}
-aside{ font-size: 0.6em; }
+aside{ font-size: 0.8em; }
 
-.key,
+#buttonSection table,
 .player{
   margin: 0.5em auto;
   width: 75%;
 }
 
-.key label{ display: inline-block; width: 200px; }
-.key input{ width: 45px; }
-.key.last{
-    padding-bottom: 1em;
-    margin-bottom: 1em;
-    border-bottom: 1px solid rgba(0,0,0,0.5);
+#buttonSection table{
+  table-layout: fixed;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
+
+.key { border: 1px solid black; padding: 1.5em;}
+.key label{ display: inline-block; width: 150px; margin-top: 1em }
+.key input{ width: 45px; }
 
 .player select{ width: 250px; }
 .player label{ display: inline-block; width: 100px; }
