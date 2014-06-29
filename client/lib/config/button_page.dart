@@ -11,11 +11,11 @@ class ButtonPage extends ManagerPage{
   ButtonPage(){
     element = query("#buttonSection");
     ButtonMappings.init();
-    _fields
-      ..add(new ButtonField(0, 0))
-      ..add(new ButtonField(0, 1))
-      ..add(new ButtonField(1, 0))
-      ..add(new ButtonField(1, 1));
+
+    for(int team in [0,1])
+      for(int pos in [0,1])
+        for(int ndx in [0,1])
+          _fields.add(new ButtonField(team, pos, ndx));
   }
 }
 
@@ -23,14 +23,15 @@ class ButtonField{
   Button button;
   InputElement _el;
 
-  ButtonField(team, position){
-    button = new Button(team, position);
+  ButtonField(team, position, index){
+    button = new Button(team, position, index);
 
-    _el = query("#sc$team$position");
+    _el = query("#sc$team$position$index");
     _el.onClick.listen(_onClick);
     _el.onKeyDown.listen(_onKeyDown);
 
-    _el.value = ButtonMappings.findKeyForButton(button);
+    String key = ButtonMappings.findKeyForButton(button);
+    _el.value = key != null ? key : "";
   }
 
   _onClick(q){
@@ -48,7 +49,7 @@ class ButtonField{
 _saveShortcuts(){
   var map = {};
   for(ButtonField f in _fields){
-    map[f.key] = f.button;
+    if(f.key.isNotEmpty) map[f.key] = f.button;
   }
   ButtonMappings.update(map);
 }

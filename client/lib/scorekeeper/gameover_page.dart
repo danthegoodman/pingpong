@@ -23,10 +23,11 @@ class GameOverPage extends ManagerPage{
     _winTitle = query("#winTitle");
     _keyHandler = new KeyHandler();
 
-    _playAnotherGame.onClick.listen(_onPlayAnotherGameClick);
+    _playAnotherGame.onClick.listen(_onPlayAnotherGameAction);
     query("#gameOverUndo").onClick.listen(_onUndoScoreAction);
     query("#returnToSetup").onClick.listen(_onReturnToSetupClick);
     _keyHandler.onUndo.listen(_onUndoScoreAction);
+    _keyHandler.onNextGame.listen(_onPlayAnotherGameAction);
   }
 
   void onShow(){
@@ -56,7 +57,7 @@ _onReturnToSetupClick(q){
   });
 }
 
-_onPlayAnotherGameClick(q){
+_onPlayAnotherGameAction(q){
   _completeGame().then(_createNewGame).then((newGame){
     GAME = newGame;
     PageManager.goto(GamePage);
