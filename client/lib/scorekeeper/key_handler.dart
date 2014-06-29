@@ -16,16 +16,19 @@ class KeyHandler {
   Stream _undo;
   Stream _badServe;
   Stream _score;
+  Stream _nextGame;
 
   Stream get onUndo => _undo;
   Stream get onBadServe => _badServe;
   Stream<PlayerKeyEvent> get onScore => _score;
+  Stream get onNextGame => _nextGame;
 
   KeyHandler(){
     _global.ensureAttached();
     _undo = _global.undoStream.stream.where(_isEnabled);
     _badServe = _global.badServeStream.stream.where(_isEnabled);
     _score = _global.scoreStream.stream.where(_isEnabled);
+    _nextGame = _global.nextGameStream.stream.where(_isEnabled);
   }
 
   _isEnabled([q])=> _enabled;
@@ -45,6 +48,7 @@ class _GlobalKeyHandler{
   StreamController undoStream = new StreamController.broadcast();
   StreamController badServeStream = new StreamController.broadcast();
   StreamController<PlayerKeyEvent> scoreStream = new StreamController<PlayerKeyEvent>.broadcast();
+  StreamController nextGameStream = new StreamController.broadcast();
 
   _GlobalKeyHandler(){
     ButtonMappings.init();
@@ -64,14 +68,18 @@ class _GlobalKeyHandler{
 
     _currentButton = b;
     _activeButton = b;
-    if(_lastButton != null){
-      if(_lastButton != b) return;
-      if(_scoreTimer == null) return;
-      badServeStream.add(null);
-      _clearAllTimeouts();
+    if (b.index == 0) {
+      if(_lastButton != null){
+        if(_lastButton != b) return;
+        if(_scoreTimer == null) return;
+        badServeStream.add(null);
+        _clearAllTimeouts();
+      } else {
+        _undoTimer = new Timer(_undoTimeframe, _onUndoTimeout);
+        _scoreTimer = new Timer(_badServeTimeframe, _onScoreTimeout);
+      }
     } else {
-      _undoTimer = new Timer(_undoTimeframe, _onUndoTimeout);
-      _scoreTimer = new Timer(_badServeTimeframe, _onScoreTimeout);
+      nextGameStream.add(null);
     }
   }
 
