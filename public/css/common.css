@@ -4,21 +4,35 @@
   font-size: 1em;
 }
 
-button{ cursor: pointer; }
-
 html, body{ height: 100%; overflow: hidden; margin: 0; padding: 0;}
 
 body{
-  font-size: 30px;
+  font-size: 25px;
   background-color: #ddd;
 }
 
+button{
+  cursor: pointer;
+  border: 1px solid black;
+  display: inline-block;
+  padding: 0.3em 1em;
+  background-color: #aaa;
+}
+
+*[hidden]{ display: none !important; }
+
 .page{
-  -webkit-transition: 500ms all linear 0ms;
+  -webkit-transition: 500ms opacity linear 0ms;
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 0;
   opacity: 0;
   z-index: -1;
+}
+
+#fadeOutMask{
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left :0;
+  z-index: 0;
 }
 
 #bgimg{
@@ -38,3 +52,36 @@ body{
   width: 200px;
   height: 200px;
 }
+
+@font-face {
+  font-family: 'pingpong-icons';
+  src:url('/font/pingpong-icons.woff?enesuzk') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.checkbox{ cursor: pointer; }
+
+.checkbox:before,
+.icon-cog,
+.icon-close{
+  font-family: 'pingpong-icons';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-cog:before { content: "\e600"; }
+.icon-close:before { content: "\e601"; }
+.checkbox:before {
+  content: "\e603";
+  padding-right: 0.5em;
+  font-size: 0.9em;
+}
+.checkbox-checked:before { content: "\e602"; }

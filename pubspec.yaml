@@ -1,0 +1,12 @@
+name: pingpong
+description: A sample web application
+dependencies:
+  collection: any
+  browser: any
+  shelf: any
+  shelf_route: any
+  shelf_static: any
+  shelf_proxy: any
+  shelf_web_socket: any
+  mongo_dart: any
+  connection_pool: any

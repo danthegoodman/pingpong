@@ -1,23 +1,21 @@
 * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -moz-user-select: moz-none;
+  -moz-user-select: -moz-none;
   user-select: none;
 }
+
+body{ font-size: 30px; }
+
 #playerPage #players div.selected,
 #game.leftServing .score.left { background-color: #6CA2D8; }
-
 #game.rightServing .score.right { background-color: #6CD8A2; }
-
-#game .leftServing .score.right,
-#game .rightServing .score.left { background-color: rgba(255,255,255, 0.4); }
-
 
 #playerPage .buttonSection{
    position: absolute;
    top: auto; right: 1em; bottom: 1em; left: 1em;
 }
-#playerPage #begin {
+#playerPage .begin {
   text-align: center;
   background-color: #aaa;
   border: 5px solid #333;
@@ -42,141 +40,129 @@
   text-align: center;
   cursor: pointer;
 }
-#playerPage #tournament{
-  margin-top: 0.5em;
+
+
+#teamPage {
+  width: 60%;
+  margin: 1em auto;
+  display: flex;
+  flex-direction: column;
+}
+#teamPage .team {
+  background: rgba(0,0,0,0.1);
+  margin: auto;
+  padding: 1em 1em 1em 0;
+  display: flex;
+  align-items: center;
   text-align: center;
-  font-size: 2em;
+  cursor: pointer;
 }
-#playerPage #tournament p { margin: 0; }
-#playerPage #tournament aside { font-size: 0.25em; }
-
-
-
-#teamPage table{
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-#teamPage h1,
-#teamPage p{
-  text-align: center;
-  margin: 0;
-}
-#teamPage .main,
-#teamPage .ordered{
-  position: relative;
-  padding: 1em;
+#teamPage .insignificant{
   opacity: 0.5;
 }
-#teamPage .main:hover,
-#teamPage .ordered:hover{
-  background: rgba(0,0,0,0.1);
+#teamPage .score{
+  width: 5em;
+  font-size: 2.5em;
+  font-family: 'Palatino Linotype', sans-serif;
 }
-#teamPage .main{ clear: both;}
-#teamPage .ordered{ font-size: 70%;}
-#teamPage .significant{ opacity: 1; }
-#teamPage .mostSignificant{
-  background: rgba(0,0,0,0.2);
-}
-#teamPage #teamCancel{
-  position: absolute;
-  top: auto; right:0 ; bottom: 1em; left: 0;
-  clear: both;
+#teamPage .cancel{
   text-align: center;
-  background-color: #aaa;
-  border: 5px solid #333;
-  margin: 0 auto;
+  order: 1;
+  background-color: rgba(0,0,0,0.2);
+  margin-top: 1em;
   padding: 1em 0;
   cursor: pointer;
-  width: 60%;
 }
 
 
-
-#game{ top: 1em; bottom: 1em; }
-#game #tournamentStatus{
-  position: absolute;
-  top: -0.75em; right: 20%; bottom: auto; left: 20%;
-  text-align: center;
-  border: 2px solid black;
-  border-top-style: none;
-  font-size: 1.5em;
-  background-color: #ddd;
-  padding: 0.2em;
+#game{
+  top: 1em; bottom: 1em;
+  display: flex;
+  align-items: stretch;
 }
-#game #tournamentStatus .left { float: left; }
-#game #tournamentStatus .right { float: right; }
-#game #tournamentStatus p { margin: 0; }
-#game #tournamentStatus .count { padding-left: 5px; }
-#game #tournamentStatus .star:before { content: "★"; }
-#game #cancelGame{
+#game .cancel{
   position: absolute;
   top: -1.2em; right: 0.3em; bottom: auto; left: auto;
   opacity: 0.5;
   cursor: pointer;
   font-size: 0.8em;
 }
-#game #cancelGame span{ font-family: 'Arial'; font-weight: bold;}
-#game #cancelGame:hover { opacity: 1; }
-#game #cancelGame:hover span{ color: #D00; }
+#game .cancel:hover { opacity: 1; color: #D00; }
 #game .teamContainer{
-  border-spacing: 0;
-  width: 20%;
-  vertical-align: middle;
-  height: 100%;
-  table-layout: fixed;
+  flex: 2;
+  display: flex;
+  flex-direction: column;
   text-align: center;
 }
-#game .teamContainer.left { float: left; }
-#game .teamContainer.right { float: right; }
-#game .teamContainer td{
+#game .teamContainer > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   overflow: hidden;
-  font-family: serif;
   font-size: 2.2em;
   font-weight: 400;
   cursor: pointer;
-  min-height: 50%;
 }
-#game .teamContainer td:hover{ background-color: rgba(0,0,0,0.3); }
-#game .scoreContainer{ overflow: hidden; height: 100%; }
-#game .scoreTable{
-  width: 100%;
-  height: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
+#game .teamContainer > div:hover{ background-color: rgba(0,0,0,0.3); }
+
+#game .infoContainer {
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  flex: 5;
   text-align: center;
+  align-items: stretch;
 }
-#game .scoreTable td { width: 50%; border: 2px solid black; }
-#game .scoreTable td.score{
+#game .message {
+  flex: 1 100%;
+  font-size: 1.2em;
+  height: 1.2em;
+  max-height: 1.2em;
+  border-bottom: 2px solid black;
+}
+#game .scoreContainer {
+  display: flex;
+  flex: 1;
+}
+#game .score.left { border-right: 2px solid black; }
+
+#game .score {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   font-family: Helvetica, sans-serif;
   font-size: 10em;
-  line-height: 1em;
-  cursor: default;
+  cursor: pointer;
 }
-#game .scoreTable .button{
-  font-size: 20px;
-  height: 30px;
+#game .buttonContainer { display: flex; }
+#game .button{
+  flex: 1 45%;
+  font-size: 1.2em;
+  height: 1.2em;
+  line-height: 1.2em;
   cursor: pointer;
   background-color: #ccc;
+  border-top: 2px solid black;
 }
-#game .scoreTable .button:hover{ background-color: #aaa; }
-
+#game .button:first-child { border-right: 2px solid black; }
+#game .button:hover{ background-color: #aaa; }
 
 
 #gameover{
   top: 1em; right: 1em; bottom: 1em; left: 1em;
   text-align: center;
   cursor: default;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
-#gameover table{width: 100%; height: 100%;}
-#gameover h1{ margin: 0.2em; font-size: 3.5em; }
-#gameover h2{ margin: 0.2em; font-size: 1em; }
-#gameover #subwinners{ font-size: 2.5em; }
-#gameover p{ font-size: 0.8em; margin: 0.5em;}
-#gameover #seconds{ display: inline-block; width: 35px;}
-#gameover .buttons div{
+#gameover .winTitle { margin: 0.2em; font-size: 1em;}
+#gameover .winners { margin: 0.2em; font-size: 3.5em;}
+#gameover .buttonSection div{
     width: 14em;
-    font-size: 0.9em;
+    font-size: 1.2em;
     background-color: #aaa;
     border: 3px solid black;
     border-radius: 0.5em;
@@ -184,18 +170,18 @@
     margin: 1.5em auto;
     cursor: pointer;
 }
-#gameover .buttons div:hover{ background-color: #888; }
-#gameover .buttons div:first-child,
-#gameover .buttons div:last-child{font-size: 0.7em;}
+#gameover .buttonSection div:hover{ background-color: #888; }
+#gameover .buttonSection .undo,
+#gameover .buttonSection .returnToSetup{font-size: 0.75em;}
+
 
 #configure {
   color: black;
   position: absolute;
-  bottom: 0.5em;
-  right: 0.5em;
-  width: 2em;
-  height: 2em;
+  bottom: 0.25em;
+  right: 0.25em;
+  font-size: 2em;
+  text-decoration: none;
   opacity: 0.75;
   cursor: pointer;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-31 -159 1600 1600" version="1.1" width="100%" height="100%"><g><path style="fill:currentColor" d="M512,640 a256,256 1 1,1 0,1 zM1536,749 v-222 q0,-12 -8,-23 -8,-11 -20,-13 l-185,-28 q-19,-54 -39,-91 35,-50 107,-138 10,-12 10,-25 0,-13 -9,-23 -27,-37 -99,-108 -72,-71 -94,-71 -12,0 -26,9 l-138,108 q-44,-23 -91,-38 -16,-136 -29,-186 -7,-28 -36,-28 h-220 q-14,0 -24.5,8.5 Q622,-111 621,-98 l-28,184 q-49,16 -90,37 l-141,-107 q-10,-9 -25,-9 -14,0 -25,11 -126,114 -165,168 q-7,10 -7,23 0,12 8,23 15,21 51,66.5 36,45.5 54,70.5 -27,50 -41,99 l-182,26 q-13,2 -21,12.5 -8,10.5 -8,23.5 v222 q0,12 8,23 8,11 19,13 l186,28 q14,46 39,92 -40,57 -107,138 -10,12 -10,24 0,10 9,23 26,36 98.5,107.5 72.5,71.5 94.5,71.5 13,0 26,-10 l138,-107 q44,23 91,38 16,136 29,186 7,28 36,28 h222 q14,0 24.5,-8.5 10,-9 11,-22 l28,-184 q49,-16 90,-37 l142,107 q9,9 24,9 13,0 25,-10 129,-119 165,-170 7,-8 7,-22 0,-12 -8,-23 -15,-21 -51,-66.5 -36,-45.5 -54,-70.5 26,-50 41,-98 l183,-28 q13,-2 21,-12.5 8,-10.5 8,-23.5 z"/></g></svg>');
 }
