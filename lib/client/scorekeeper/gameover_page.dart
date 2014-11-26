@@ -11,7 +11,8 @@ class GameOverPage extends ManagerPage {
     _keyHandler.onUndo.listen(_onUndoScoreAction);
   }
 
-  void onHide() {
+  @override
+  void onLeave() {
     _keyHandler.close();
   }
 

@@ -54,6 +54,7 @@ class GamePage extends ManagerPage {
       ..append(teamContainer1);
   }
 
+  @override
   void onLeave() {
     _keyHandler.close();
   }
