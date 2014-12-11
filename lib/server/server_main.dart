@@ -21,8 +21,8 @@ Future startServer({String database, int port}) {
   Mongo.init(database);
 
   var handler = _buildHandler();
-  return io.serve(handler, 'localhost', port).then((server) {
-    _LOG.info('Serving at http://${server.address.host}:${server.port}');
+  return io.serve(handler, InternetAddress.ANY_IP_V6, port).then((server) {
+    _LOG.info('Serving at http://localhost:${server.port}');
     return server;
   });
 }
