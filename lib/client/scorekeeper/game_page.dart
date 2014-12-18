@@ -86,7 +86,7 @@ class GamePage extends ManagerPage {
   void _addGamePointBy(Team t) {
     if (!_game.addPointByTeam(t)) return;
 
-    soundManager.score();
+    (t == T0) ? soundManager.scoreLeft() : soundManager.scoreRight();
     GameManager.save(_game);
     _redraw();
   }
