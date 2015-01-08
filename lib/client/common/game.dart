@@ -18,7 +18,9 @@ class Game implements Model {
   Game.afterGame(Game other) : _data = new GameSchema() {
     var p = other._data.players;
     List newPlayers;
-    if(other._data.gameInMatch.isEven){
+    if(p.length == 2) {
+      newPlayers = [p[1], p[0]];
+    } else if(other._data.gameInMatch.isEven){
       newPlayers = [p[1], p[0], p[3], p[2]];
     } else {
       newPlayers = [p[3], p[2], p[1], p[0]];
