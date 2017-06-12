@@ -1,6 +1,7 @@
 library pingpong.scorekeeper;
 
 import 'dart:math' as math;
+import 'package:uuid/uuid.dart';
 import '../common.dart';
 import '../button_handler.dart';
 import '../sound_manager.dart';
@@ -17,12 +18,12 @@ void main(){
   common_main();
 
   Future.wait([PlayerManager.loadAll(), GameManager.loadAll()]).then((q){
-    var pendingGames = GameManager.models;
-    if(pendingGames.isEmpty){
+    var uuid = window.localStorage.putIfAbsent('clientUuid', () => new Uuid().v4());
+    var pendingGame = GameManager.models.firstWhere((it) => it.clientUuid == uuid, orElse: () => null);
+    if(pendingGame == null){
       PageManager.goto(new PlayerPage());
     } else {
-      var game = pendingGames.first;
-      var target = game.isComplete ? new GameOverPage(game) : new GamePage(game);
+      var target = pendingGame.isComplete ? new GameOverPage(pendingGame) : new GamePage(pendingGame);
       PageManager.goto(target);
     }
   });
