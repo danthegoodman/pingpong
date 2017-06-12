@@ -13,6 +13,7 @@ class Game implements Model {
 
   Game(Iterable<Player> players) : _data = new GameSchema() {
     _data.players = players.map((p)=> p.id).toList();
+    _data.clientUuid = window.localStorage['clientUuid'];
   }
 
   Game.afterGame(Game other) : _data = new GameSchema() {
@@ -27,12 +28,14 @@ class Game implements Model {
     }
 
     _data
+      ..clientUuid = other.clientUuid
       ..players = newPlayers
       ..gameInMatch = other._data.gameInMatch + 1
       ..parentId = other.id;
   }
 
   String get id => _data.id;
+  String get clientUuid => _data.clientUuid;
   DateTime get date => _data.date;
   List<Player> get players => PlayerManager.mapFrom(_data.players);
   Team get winningTeam => _data.getScore(0) > _data.getScore(1) ? T0 : T1;

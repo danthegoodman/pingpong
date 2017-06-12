@@ -2,6 +2,7 @@ part of pingpong.json.schema;
 
 class GameSchema {
   final String id;
+  String clientUuid;
   int gameInMatch;
   String parentId;
 
@@ -22,6 +23,7 @@ class GameSchema {
 
   GameSchema.fromJson(json) :
     id = _ObjId_fromJson(json['_id']),
+    clientUuid = json['clientUuid'],
     gameInMatch = json['gameInMatch'],
     parentId = _ObjId_fromJson(json['parentId']),
     players = _List_fromJson(json['players'], _ObjId_fromJson),
@@ -31,6 +33,7 @@ class GameSchema {
 
   Map toJson() => {
       '_id': _ObjId_toJson(id),
+      'clientUuid': clientUuid,
       'gameInMatch': gameInMatch,
       'parentId': _ObjId_toJson(parentId),
       'players': _List_toJson(players, _ObjId_toJson),

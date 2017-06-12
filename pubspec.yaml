@@ -10,3 +10,4 @@ dependencies:
   shelf_web_socket: any
   mongo_dart: any
   connection_pool: any
+  uuid: any
